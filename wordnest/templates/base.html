@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Default title{% endblock title %}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header>
-        <!-- Navigation goes here -->
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}Default title{% endblock title %}</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+            rel="stylesheet" />
+    </head>
+    <body class="inter-font">
+        <header>
+            <!-- Header content goes here -->
+        </header>
 
-    <main>
-        {% block content %}
-        <!-- Default Content -->
-        {% endblock content %}
-    </main>
+        <main>
+            {% block content %}
+            <!-- Default Content -->
+            {% endblock content %}
+        </main>
 
-    <footer>
-        <!-- Footer content goes here -->
-    </footer>
+        <footer>
+            <!-- Footer content goes here -->
+        </footer>
 
-    <script src="{% static 'js/script.js' %}"></script>
-</body>
+        <script src="{% static 'js/script.js' %}"></script>
+    </body>
 </html>
