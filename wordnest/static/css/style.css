@@ -2,17 +2,28 @@
 
 /* Variables */
 :root {
-    --regular-font: 400;
-    --medium-font: 500;
-    --bold-font: 700;
-    --black-font: 900;
+    --regular-fw: 400;
+    --medium-fw: 500;
+    --bold-fw: 700;
+    --black-fw: 900;
+    --color-1: #ffbf00;
+    --color-2: #191919;
+    --color-3: #f3f3f3;
+    --color-4: #8c8c8c;
+    --mob-side-padding: 1rem;
+    --tab-side-padding: 2rem;
+    --desk-side-padding: 8rem;
+    --small-fs: 20px;
+    --medium-fs: 24px;
+    --large-fs: 30px;
+    --xlarge-fs: 40px;
 }
 
 /* Common styles */
 .inter-font {
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
-    font-weight: var(--regular-font);
+    font-weight: var(--regular-fw);
     font-style: normal;
     font-variation-settings: "slnt" 0;
 }
