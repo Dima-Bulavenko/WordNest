@@ -153,6 +153,9 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [W3C HTML Markup Validator](https://validator.w3.org/) to validate HTML code.
 -   [W3C Jigsaw CSS Validator](https://jigsaw.w3.org/css-validator/) to validate CSS code.
 -   [JS Hint](https://jshint.com/) to validate JS code.
+-   [django-livereload-server](https://github.com/tjwalch/django-livereload-server) - automatically reload django server when a static file was changed.
+-   [django-allauth](https://docs.allauth.org/en/latest/introduction/index.html) - help to set up social authentication.
+
 
 [Back to the top](#table-of-contents)
 
