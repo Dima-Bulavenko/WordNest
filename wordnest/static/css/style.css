@@ -27,3 +27,29 @@
     font-style: normal;
     font-variation-settings: "slnt" 0;
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Mobile */
+
+/* Header */
+#header {
+    display: flex;
+    background-color: var(--color-1);
+    justify-content: space-between;
+    padding: 20px var(--mob-side-padding);
+}
+
+#logo-image-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#logo-image-text span {
+    font-weight: var(--black-fw);
+    font-size: var(--medium-fs);
+}
