@@ -1,10 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}Default title{% endblock title %}</title>
-        {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,8 +13,14 @@
             rel="stylesheet" />
     </head>
     <body class="inter-font">
-        <header>
-            <!-- Header content goes here -->
+        <header id="header">
+            <a id="logo-image-text" href="{% url 'home'%}">
+                {% include "svg_templates/logo.svg" %}
+                <span>WordNest</span>
+            </a>
+            <nav>
+                {% include "svg_templates/burger.svg" %}
+            </nav>
         </header>
 
         <main>
