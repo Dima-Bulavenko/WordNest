@@ -184,6 +184,7 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 [Back to the top](#table-of-contents)
 
 ## Design Template
+[Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
 
 [Back to the top](#table-of-contents)
 
