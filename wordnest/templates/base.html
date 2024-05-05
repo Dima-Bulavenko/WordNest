@@ -25,8 +25,19 @@
                 {% include "svg_templates/logo.svg" %}
                 <span>WordNest</span>
             </a>
-            <nav>
+            <div id="burger-menu" class="plate">
                 {% include "svg_templates/burger.svg" %}
+                {% include "svg_templates/cross.svg" %}
+            </div>
+            <nav id="navigation">
+                <ul>
+                    <li class="authentication-button bright-bg">
+                        <a href="#">Login</a>
+                    </li>
+                    <li class="authentication-button dark-bg">
+                        <a href="#">Register</a>
+                    </li>
+                </ul>
             </nav>
         </header>
         <main>
