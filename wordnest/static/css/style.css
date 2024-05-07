@@ -29,6 +29,7 @@
 
 body {
     padding-top: var(--header-height);
+    letter-spacing: calc(-0.04 * 1em);
 }
 
 .inter-font {
@@ -46,6 +47,10 @@ li {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+a {
+    display: block;
 }
 
 /* Mobile */
