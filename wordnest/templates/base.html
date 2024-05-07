@@ -42,7 +42,26 @@
         </header>
         <main>
             {% block content %}
-                <!-- Default Content -->
+                <section id="welcome" class="dark-bg">
+                    <div class="theme-description">
+                        <h2 class="theme">Welcome to WordNest Online Dictionary!</h2>
+                        <p class="description">Unlock the power of words and create your own personalized dictionary.</p>
+                    </div>
+                    <div class="signup-block">
+                        <div class="signup-btn bright-bg">
+                            <a href="#">sign up</a>
+                        </div>
+                        <p>sign up with</p>
+                        <div class="signup-with">
+                            <a href="#">
+                                <img src="{% static "img/google_logo.svg" %}" alt="google logo">
+                            </a>
+                            <a href="#">
+                                <img src="{% static "img/facebook_logo.svg" %}" alt="facebook logo">
+                            </a>
+                        </div>
+                    </div>
+                </section>
             {% endblock content %}
         </main>
         <footer>
