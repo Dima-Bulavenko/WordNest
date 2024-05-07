@@ -187,3 +187,62 @@ a {
     transform: scale(1);
     transition: transform 400ms 350ms;
 }
+
+/* Main block */
+
+/* Welcome section */
+#welcome {
+    padding: 80px var(--mob-side-padding);
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.theme-description {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.theme {
+    text-transform: capitalize;
+    font-size: var(--xlarge-fs);
+    font-weight: var(--black-fw);
+    margin: 0;
+    padding: 0;
+}
+
+.description {
+    color: var(--color-4);
+    font-size: var(--medium-fs);
+}
+
+.signup-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+}
+
+.signup-btn {
+    text-align: center;
+    text-transform: capitalize;
+    width: 80%;
+    border-radius: 10px;
+    font-size: var(--medium-fs);
+    font-weight: var(--bold-fw);
+}
+
+.signup-btn > a {
+    padding: 24px 0;
+}
+
+.signup-block > p {
+    color: var(--color-4);
+    font-size: var(--small-fs);
+}
+
+.signup-with {
+    display: flex;
+    gap: 30px;
+}
