@@ -353,5 +353,23 @@ a {
 
     .authentication-button:hover {
         transform: scale(1.1);
+    }  
+
+    /* Welcome section */
+    #welcome {
+        padding: 80px var(--desk-side-padding);
+        justify-content: space-between;
+    }
+
+    .signup-btn, .signup-with img {
+        transition: all 0.5s;
+    }
+
+    .signup-btn:hover, .signup-with img:hover {
+        transform: scale(1.2);
+    }
+
+    .signup-btn:hover {
+        background-color: var(--color-1);
     }
 }
