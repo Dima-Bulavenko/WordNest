@@ -228,6 +228,7 @@ a {
     text-align: center;
     text-transform: capitalize;
     width: 80%;
+    max-width: 300px;
     border-radius: 10px;
     font-size: var(--medium-fs);
     font-weight: var(--bold-fw);
@@ -271,3 +272,34 @@ a {
     font-size: var(--large-fs);
 }
 
+/* Media query: Tablet screen size */
+@media screen and (min-width: 768px) {
+    /* Header */
+    #header {
+        padding: 20px var(--tab-side-padding);
+    }
+    
+    /* Welcome section */
+    #welcome {
+        padding: 80px var(--tab-side-padding);
+        flex-direction: row;
+        align-items: center;
+        gap: 80px;
+    }
+
+    #welcome > .theme-description {
+        flex-basis: 50%;
+    }
+
+    #welcome > .signup-block {
+        flex-basis: 35%;
+    }
+
+    .signup-btn {
+        width: 170px;
+    }
+
+    .signup-btn > a {
+        padding: 15px 0 ;
+    }
+}
