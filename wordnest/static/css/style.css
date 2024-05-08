@@ -12,7 +12,7 @@
     --color-4: #8c8c8c;
     --mob-side-padding: 1rem;
     --tab-side-padding: 2rem;
-    --desk-side-padding: 8rem;
+    --desk-side-padding: 5rem;
     --small-fs: 20px;
     --medium-fs: 24px;
     --large-fs: 30px;
@@ -278,7 +278,7 @@ a {
     #header {
         padding: 20px var(--tab-side-padding);
     }
-    
+
     /* Welcome section */
     #welcome {
         padding: 80px var(--tab-side-padding);
@@ -301,5 +301,57 @@ a {
 
     .signup-btn > a {
         padding: 15px 0 ;
+    }
+}
+
+/* Media query: Desktop screen size */
+@media only screen and (min-width: 992px) {
+    /* Header */
+    #header {
+        padding: 20px 40px 20px var(--desk-side-padding);
+    }
+
+    #logo-image-text > svg {
+        transition: transform 1s;
+    }
+
+    #logo-image-text:hover> svg {
+        transform: rotate(90deg);
+        transition: transform 1s;
+    }
+
+    #burger-menu {
+        display: none;
+    }
+
+    #navigation {
+        position: static;
+        height: auto;
+        width: initial;
+        overflow: initial;
+    }
+
+    #navigation > ul {
+        flex-direction: row;
+        transform: none; 
+    }
+
+    .authentication-button {
+        padding: 10px 20px;
+        transition: all 0.5s;
+    }
+
+    .authentication-button.bright-bg:hover {
+        background-color: var(--color-2);
+        color: var(--color-3);
+    }
+
+    .authentication-button.dark-bg:hover {
+        background-color: var(--color-3);
+        color: var(--color-2);
+    }
+
+    .authentication-button:hover {
+        transform: scale(1.1);
     }
 }
