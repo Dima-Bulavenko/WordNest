@@ -302,6 +302,26 @@ a {
     .signup-btn > a {
         padding: 15px 0 ;
     }
+
+    /* Features section */
+    #features {
+        padding: 80px var(--tab-side-padding);
+    }
+
+    #features>.theme-description {
+        width: 80%;
+    }
+
+    #feature-items {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        gap: 20px;
+    }
+
+    .feature-5 {
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+    }
 }
 
 /* Media query: Desktop screen size */
