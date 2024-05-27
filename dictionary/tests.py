@@ -74,3 +74,9 @@ class UserTest(UserSetUpMixing, TestCase):
         user.is_superuser = True
 
         self.assertEqual(user.is_staff, user.is_superuser)
+
+    def test_str_method(self):
+        user = self.user_model(email=self.test_email,
+                               password=self.test_pwd)
+        
+        self.assertEqual(str(user), user.email)
