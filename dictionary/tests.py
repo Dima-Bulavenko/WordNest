@@ -36,3 +36,9 @@ class UserManagerTest(TestCase):
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.check_password(self.test_pwd))
+    
+    def test_invalid_superuser_field(self):
+        exp_msg = "Superuser must have is_superuser=True."
+        with self.assertRaisesMessage(ValueError, exp_msg):
+            self.user_model.objects.create_superuser(self.test_email, self.test_pwd, is_superuser=False)
+        
