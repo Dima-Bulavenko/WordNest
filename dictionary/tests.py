@@ -60,4 +60,17 @@ class UserTest(UserSetUpMixing, TestCase):
         self.assertEqual(user.is_active, is_active)
         self.assertEqual(user.is_superuser, is_superuser)
         self.assertTrue(hasattr(user, "date_joined"))
-      
+    
+    def test_is_staff_property(self):
+        user = self.user_model(email=self.test_email,
+                               password=self.test_pwd,
+                               is_superuser=False)
+        
+        # Because is_staff property always is equal is_superuser one
+        # It should change when is_superuser changes
+
+        self.assertEqual(user.is_staff, user.is_superuser)
+
+        user.is_superuser = True
+
+        self.assertEqual(user.is_staff, user.is_superuser)
