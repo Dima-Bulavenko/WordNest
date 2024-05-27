@@ -43,4 +43,21 @@ class UserManagerTest(UserSetUpMixing, TestCase):
         exp_msg = "Superuser must have is_superuser=True."
         with self.assertRaisesMessage(ValueError, exp_msg):
             self.user_model.objects.create_superuser(self.test_email, self.test_pwd, is_superuser=False)
+
+
+class UserTest(UserSetUpMixing, TestCase):
+    
+    def test_model_fields(self):
+        is_active = False
+        is_superuser = False
+        user = self.user_model(email=self.test_email,
+                               password=self.test_pwd,
+                               is_active=is_active,
+                               is_superuser=is_superuser)
         
+        self.assertEqual(user.email, self.test_email)
+        self.assertEqual(user.password, self.test_pwd)
+        self.assertEqual(user.is_active, is_active)
+        self.assertEqual(user.is_superuser, is_superuser)
+        self.assertTrue(hasattr(user, "date_joined"))
+      
