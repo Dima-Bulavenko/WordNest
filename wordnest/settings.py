@@ -132,3 +132,7 @@ STATICFILES_DIRS = [BASE_DIR.joinpath("wordnest", "static")]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Specify django to user custom User model
+AUTH_USER_MODEL = 'dictionary.User'
+
