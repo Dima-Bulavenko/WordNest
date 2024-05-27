@@ -25,10 +25,14 @@ class UserManagerTest(TestCase):
         with self.assertRaises(ValueError) as e:
             self.user_model.objects.create_user(email="", password=self.test_pwd)
         self.assertEqual(str(e.exception), message)
-        
 
-        
-        
+    def test_create_superuser(self):
+        user = self.user_model.objects.create_superuser(email=self.test_email,
+                                             password=self.test_pwd)
+        user_exist = self.user_model.objects.filter(email=self.test_email).exists()
 
-
-
+        self.assertEqual(user.email, self.test_email)
+        self.assertTrue(user_exist)
+        self.assertTrue(user.is_active)
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.check_password(self.test_pwd))
