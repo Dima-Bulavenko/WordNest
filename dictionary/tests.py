@@ -18,7 +18,17 @@ class UserManagerTest(TestCase):
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_superuser)
         self.assertTrue(user.check_password(self.test_pwd))
+    
+    def test_create_user_without_email(self):
+        message = "Users must have an email address"
 
+        with self.assertRaises(ValueError) as e:
+            self.user_model.objects.create_user(email="", password=self.test_pwd)
+        self.assertEqual(str(e.exception), message)
+        
+
+        
+        
 
 
 
