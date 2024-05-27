@@ -2,12 +2,14 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 
-class UserManagerTest(TestCase):
+class UserSetUpMixing:
     def setUp(self):
         self.user_model = get_user_model()
         self.test_email = "testeamil@test.com"
         self.test_pwd = "testpassword"
 
+
+class UserManagerTest(UserSetUpMixing, TestCase):
     def test_create_user(self):
         user = self.user_model.objects.create_user(email=self.test_email,
                                              password=self.test_pwd)
