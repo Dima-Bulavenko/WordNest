@@ -1,0 +1,15 @@
+{% extends "account/base_entrance.html" %}
+{% load static %}
+{% load allauth i18n %}
+{% block title %}
+    {% trans "Sign in" %}
+{% endblock title %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock css_block %}
+{% block content %}
+    {% include "account/form.html" with form_type="sign in" %}
+{% endblock content %}
+{% block js_block %}
+    <script src="{% static 'js/auth.js' %}"></script>
+{% endblock js_block %}
