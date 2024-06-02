@@ -13,6 +13,7 @@
     --mob-side-padding: 1rem;
     --tab-side-padding: 2rem;
     --desk-side-padding: 5rem;
+    --xsmall-fs: 16px;
     --small-fs: 20px;
     --medium-fs: 24px;
     --large-fs: 30px;
@@ -38,6 +39,10 @@ body {
     font-weight: var(--regular-fw);
     font-style: normal;
     font-variation-settings: "slnt" 0;
+}
+
+.align-center {
+    text-align: center;
 }
 
 li {
