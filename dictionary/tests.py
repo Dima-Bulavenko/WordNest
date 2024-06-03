@@ -1,5 +1,10 @@
+from unittest.mock import patch
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.urls import NoReverseMatch, reverse
+
+from dictionary.forms import LoginForm
 
 
 class UserSetUpMixing:
@@ -80,3 +85,29 @@ class UserTest(UserSetUpMixing, TestCase):
                                password=self.test_pwd)
         
         self.assertEqual(str(user), user.email)
+
+
+class LoginFormTest(TestCase):
+    def test_form_has_no_password_help_text(self):
+        form = LoginForm()
+
+        self.assertIsNone(form.fields["password"].help_text)
+
+    def test_form_has_forgot_pwd_property(self):
+        form = LoginForm()
+
+        self.assertIn('forgot_pwd', dir(form))
+
+    def test_forgot_pwd_property_returns_correct_html(self):
+        form = LoginForm()
+        reset_url = reverse("account_reset_password")
+        expected_html = f'<div class="forgot_pwd align-center auth-link"><a href="{reset_url}">Forgot your password?</a></div>'
+
+        self.assertEqual(form.forgot_pwd, expected_html)
+    
+    @patch('dictionary.forms.reverse')
+    def test_forgot_pwd_property_returns_none(self, mock_reverse):
+        mock_reverse.side_effect = NoReverseMatch
+        form = LoginForm()
+
+        self.assertIsNone(form.forgot_pwd)
