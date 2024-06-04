@@ -1,0 +1,16 @@
+{
+  "name": "wordnest",
+  "version": "1.0.0",
+  "description": "-   [WordNest (Milestone Project 4)](#wordnest--milestone-project-4-)\r     -   [Table of contents](#table-of-contents)\r -   [Purpose](#purpose)\r -   [UX Design](#ux-design)\r     -   [User stories](#user-stories)\r         -   [As a **first time user**](#as-a---first-time-user--)\r         -   [As a **returning user**](#as-a---returning-user--)\r     -   [UAC](#uac)\r     -   [Structure](#structure)\r -   [Wireframes](#wireframes)\r -   [Design](#design)\r     -   [Design](#design-1)\r         -   [Colour Scheme](#colour-scheme)\r         -   [Typography](#typography)\r         -   [Images](#images)\r         -   [Visual Effects](#visual-effects)\r             -   [Onscroll Animation](#onscroll-animation)\r -   [Architecture](#architecture)\r -   [Features](#features)\r -   [Testing](#testing)\r     -   [User Story Testing](#user-story-testing)\r     -   [Manual Testing](#manual-testing)\r     -   [Unit testing](#unit-testing)\r         -   [Python unit tests](#python-unit-tests)\r         -   [JS unit tests](#js-unit-tests)\r     -   [Code validation](#code-validation)\r     -   [Lighthouse](#lighthouse)\r -   [Technologies](#technologies)\r     -   [Languages](#languages)\r     -   [Programs, frameworks, libraries](#programs--frameworks--libraries)\r -   [Deployment](#deployment)\r     -   [Github](#github)\r     -   [Heroku](#heroku)\r     -   [Fork GitHub Repo](#fork-github-repo)\r     -   [Clone GitHub Repo](#clone-github-repo)\r -   [Credits](#credits)\r     -   [Media](#media)\r     -   [Design Template](#design-template)\r     -   [Code](#code)\r     -   [Acknowledgements](#acknowledgements)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
