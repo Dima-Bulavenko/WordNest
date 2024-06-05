@@ -147,6 +147,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {'login': 'dictionary.forms.LoginForm'}
+if DEBUG is True:
+    ACCOUNT_RATE_LIMITS = False
 
 # SMTP settings
 if DEBUG is True:
