@@ -4,7 +4,8 @@
  *
  * @param {NodeListOf<Element>} infoIcons - A list of elements with the class 'info_icon'.
  */
-function addClickListenersToInfoIcons(infoIcons) {
+function addClickListenersToInfoIcons() {
+    const infoIcons = document.querySelectorAll('.info_icon');
     infoIcons.forEach(function(icon) {
         icon.addEventListener('click', function() {
             const helpTextId = this.dataset.helpTextId;
@@ -17,6 +18,7 @@ function addClickListenersToInfoIcons(infoIcons) {
 }
 
 window.onload = function() {
-    var infoIcons = document.querySelectorAll('.info_icon');
-    addClickListenersToInfoIcons(infoIcons);
+    addClickListenersToInfoIcons();
 };
+
+module.exports = { addClickListenersToInfoIcons}
