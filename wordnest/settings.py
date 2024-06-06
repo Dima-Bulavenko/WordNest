@@ -14,6 +14,8 @@ from pathlib import Path
 
 from decouple import config
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -147,6 +149,16 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {'login': 'dictionary.forms.LoginForm'}
+# Determines where user be redirected if He is signed in and try to reach sign up/in links. 
+LOGIN_REDIRECT_URL = reverse_lazy("home")
+# User automatically confirm email when follow by a confirm link
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "WordNest "
+# If the value is 1, users won't be able to change email
+ACCOUNT_MAX_EMAIL_ADDRESSES = 1
+# Automatically log user in when he follow by confirm-email link
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_ON_GET = True
 if DEBUG is True:
     ACCOUNT_RATE_LIMITS = False
 
