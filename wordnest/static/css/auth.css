@@ -105,14 +105,14 @@
     display: block;
 }
 
-.field_messages ul {
+.field_messages ul, .errorlist.nonfield {
     display: flex;
     flex-direction: column;
     gap: 5px;
     padding: 5px;
 }
 
-.errors {
+.errors, .errorlist {
     color: red;
 }
 
@@ -150,4 +150,8 @@ label[for="id_remember"] {
 .forgot_pwd {
     text-align: center;
     margin-top: 20px;
+}
+
+.errorlist.nonfield {
+    transform: translateY(-30%);
 }

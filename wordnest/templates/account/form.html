@@ -8,6 +8,7 @@
         {% endif %}
     </p>
     <form method="post">
+        {{ form.non_field_errors }}
         {% csrf_token %}
         {% for field in form %}
             <div class="field-wrapper {{ field.name }}_field_wrapper">
