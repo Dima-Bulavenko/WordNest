@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -5,6 +6,7 @@ from django.test import TestCase
 from django.urls import NoReverseMatch, reverse
 
 from dictionary.forms import LoginForm
+from dictionary.models import User
 
 
 class UserSetUpMixing:
@@ -111,3 +113,40 @@ class LoginFormTest(TestCase):
         form = LoginForm()
 
         self.assertIsNone(form.forgot_pwd)
+    
+
+class IndexViewTest(TestCase):
+    def setUp(self):
+        self.url = reverse("home")
+        self.email = "test@gmail.com"
+        self.password = "Testpwd8"
+    
+    def test_user_authenticated(self):
+        User.objects.create_user(email=self.email, password=self.password)
+        self.client.login(email=self.email, password=self.password)
+        path_to_template = Path("dictionary", "index.html")
+        context_title = "WordNest Online Dictionary"
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(path_to_template, response.template_name)
+        self.assertEqual(response.context_data["title"], context_title)
+    
+    def test_user_not_authenticated(self):
+        path_to_template = Path("welcome.html")
+        context_title = "Welcome"
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(path_to_template, response.template_name)
+        self.assertEqual(response.context_data["title"], context_title)
+        
+        
+
+        
+
+        
+    
+        
+        
+        
