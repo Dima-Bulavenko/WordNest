@@ -1,6 +1,12 @@
 {% load i18n %}
 <div class="form-container">
-    <h1 class="align-center">{{ form_type|title }}</h1>
+    <h1 class="align-center">
+        {% if token_fail %}
+            {% trans "Bad Token" %}
+        {% else %}
+            {{ form_type|title }}
+        {% endif %}
+    </h1>
     <p class="align-center">
         {% if form_type == "sign up" %}
             Do you already have an account? Then please <a class="auth-link" href="{% url "account_login" %}">log in</a> instead.
@@ -10,6 +16,12 @@
                 {% trans "Forgotten your password? Enter your email address below, and we'll send you an email allowing you to reset it." %}
         {% endif %}
     </p>
+    {% if token_fail %}
+        {% url 'account_reset_password' as passwd_reset_url %}
+        <p class="align-center">
+            {% blocktrans %}The password reset link was invalid, possibly because it has already been used.  Please request a <a href="{{ passwd_reset_url }}">new password reset</a>.{% endblocktrans %}
+        </p>
+    {% else %}
     <form method="post" {% if action %}action="{{ action }}"{% endif %}>
         {{ form.non_field_errors }}
         {% csrf_token %}
@@ -38,6 +50,7 @@
         <button class="submit_bt" type="submit">{{ form_type|title }}</button>
         {% if form.forgot_pwd %}{{ form.forgot_pwd }}{% endif %}
     </form>
+    {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
     {% endif %}
