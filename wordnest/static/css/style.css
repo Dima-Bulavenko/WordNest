@@ -13,6 +13,7 @@
     --mob-side-padding: 1rem;
     --tab-side-padding: 2rem;
     --desk-side-padding: 5rem;
+    --xsmall-fs: 16px;
     --small-fs: 20px;
     --medium-fs: 24px;
     --large-fs: 30px;
@@ -28,6 +29,7 @@
 }
 
 body {
+    min-height: 100vh;
     padding-top: var(--header-height);
     letter-spacing: calc(-0.04 * 1em);
 }
@@ -38,6 +40,10 @@ body {
     font-weight: var(--regular-fw);
     font-style: normal;
     font-variation-settings: "slnt" 0;
+}
+
+.align-center {
+    text-align: center;
 }
 
 li {
@@ -104,6 +110,9 @@ a {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    text-align: center;
+    font-weight: var(--bold-fw);
+    font-size: var(--small-fs)
 }
 
 .authentication-button {
@@ -186,6 +195,11 @@ a {
 .active .x {
     transform: scale(1);
     transition: transform 400ms 350ms;
+}
+
+.logout_btn {
+    padding: 15px 30px;
+    transform: translateY(50%);
 }
 
 /* Main block */
@@ -351,9 +365,19 @@ a {
         overflow: initial;
     }
 
+    .logout_btn {
+        transform: initial;
+        margin-left: 20px;
+    }
+
+    .logout_btn:hover {
+        transform: scale(1.1);
+    }
+
     #navigation > ul {
         flex-direction: row;
         transform: none; 
+        align-items: center;
     }
 
     .authentication-button {

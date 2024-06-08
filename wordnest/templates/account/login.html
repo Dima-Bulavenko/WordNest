@@ -1,0 +1,8 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans "Sign in" %}
+{% endblock title %}
+{% block content %}
+    {% include "account/form.html" with form_type="sign in" %}
+{% endblock content %}

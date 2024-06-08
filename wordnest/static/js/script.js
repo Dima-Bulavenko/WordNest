@@ -17,3 +17,5 @@ let burgerMenu = document.querySelector(burgerMenuSelector);
 burgerMenu.addEventListener("click", function () {
     toggleActiveClass(this, document.querySelector(navigationSelector));
 });
+
+module.exports = { toggleActiveClass };

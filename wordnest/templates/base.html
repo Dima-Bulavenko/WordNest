@@ -14,6 +14,7 @@
             {% endblock title %}
         </title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        {% block css_block %}{% endblock css_block %}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
@@ -31,72 +32,34 @@
             </div>
             <nav id="navigation">
                 <ul>
-                    <li class="authentication-button bright-bg">
-                        <a href="#">Login</a>
-                    </li>
-                    <li class="authentication-button dark-bg">
-                        <a href="#">Register</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url "home" %}">My dictionary</a>
+                        </li>
+                        <li>
+                            <a href="#">Profile</a>
+                        </li>
+                        <li class="authentication-button dark-bg logout_btn">
+                            <a href="{% url "account_logout" %}">Log out</a>
+                        </li>
+                    {% else %}
+                        <li class="authentication-button bright-bg">
+                            <a href="{% url "account_login" %}">Login</a>
+                        </li>
+                        <li class="authentication-button dark-bg">
+                            <a href="{% url "account_signup" %}">Register</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
         <main>
-            {% block content %}
-                <section id="welcome" class="dark-bg">
-                    <div class="theme-description">
-                        <h2 class="theme">Welcome to WordNest Online Dictionary!</h2>
-                        <p class="description">Unlock the power of words and create your own personalized dictionary.</p>
-                    </div>
-                    <div class="signup-block">
-                        <div class="signup-btn bright-bg">
-                            <a href="#">sign up</a>
-                        </div>
-                        <p>sign up with</p>
-                        <div class="signup-with">
-                            <a href="#">
-                                <img src="{% static "img/google_logo.svg" %}" alt="google logo">
-                            </a>
-                            <a href="#">
-                                <img src="{% static "img/facebook_logo.svg" %}" alt="facebook logo">
-                            </a>
-                        </div>
-                    </div>
-                </section>
-                <section id="features" class="bright-bg">
-                    <div class="theme-description">
-                        <h2 class="theme">Features</h2>
-                        <p class="description">
-                            Discover the powerful features that make our online dictionary the ultimate tool for language learners and enthusiasts.
-                        </p>
-                    </div>
-                    <div id="feature-items">
-                        <div class="feature feature-1">
-                            <h3 class="theme sub-theme">Create Your Own Dictionary</h3>
-                            <p class="description">Build a personalized dictionary by adding words and definitions that are relevant to you.</p>
-                        </div>
-                        <div class="feature feature-2">
-                            <h3 class="theme sub-theme">Word Sets</h3>
-                            <p class="description">Organize your vocabulary into sets for easy access and efficient learning.</p>
-                        </div>
-                        <div class="feature feature-3">
-                            <h3 class="theme sub-theme">Custom Translation</h3>
-                            <p class="description">Add your own translations for perfect understanding.</p>
-                        </div>
-                        <div class="feature feature-4">
-                            <h3 class="theme sub-theme">Word Usage</h3>
-                            <p class="description">Add sentence for word to see its context</p>
-                        </div>
-                        <div class="feature feature-5">
-                            <h3 class="theme sub-theme">Audio Pronunciation</h3>
-                            <p class="description">Listen to the correct pronunciation of words to improve your speaking skills</p>
-                        </div>
-                    </div>
-                </section>
-            {% endblock content %}
+            {% block content %}{% endblock content %}
         </main>
         <footer>
             <!-- Footer content goes here -->
         </footer>
         <script src="{% static 'js/script.js' %}"></script>
+        {% block js_block %}{% endblock js_block %}
     </body>
 </html>
