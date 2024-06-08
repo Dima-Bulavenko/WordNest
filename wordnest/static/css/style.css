@@ -365,9 +365,19 @@ a {
         overflow: initial;
     }
 
+    .logout_btn {
+        transform: initial;
+        margin-left: 20px;
+    }
+
+    .logout_btn:hover {
+        transform: scale(1.1);
+    }
+
     #navigation > ul {
         flex-direction: row;
         transform: none; 
+        align-items: center;
     }
 
     .authentication-button {
