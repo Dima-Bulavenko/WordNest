@@ -262,6 +262,26 @@ a {
     gap: 30px;
 }
 
+.social_account_container {
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+}
+
+.social_account_container img {
+    transition: filter 0.5s;
+    width: 40px;
+    height: 40px;
+}
+
+.social_account_container img, .submit_bt {
+    transition: filter 0.5s;
+}
+
+.social_account_container img:hover, .submit_bt:hover {
+    filter: brightness(50%);
+}
+
 /* Features section */
 #feature-items {
     display: grid;
