@@ -1,0 +1,6 @@
+{% load static %}
+<div id="{{ provider.id }}__provider" class="social_account">
+    <a href="{{ href }}">
+        <img src="{% static "img/"|add:provider.id|add:"_logo.svg" %}" alt="log in with {{ name }}">
+    </a>
+</div>

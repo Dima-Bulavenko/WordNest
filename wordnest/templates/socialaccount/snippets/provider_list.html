@@ -1,0 +1,16 @@
+{% load allauth socialaccount static %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    <div class="social_account_container">
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == "openid" %}
+                {% for brand in provider.get_brands %}
+                    {% provider_login_url provider openid=brand.openid_url process=process as href %}
+                    {% include "socialaccount/snippets/provider.html" with provider=provider href=href name=brand.name %}
+                {% endfor %}
+            {% endif %}
+            {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+            {% include "socialaccount/snippets/provider.html" with provider=provider href=href name=provider.name %}
+        {% endfor %}
+    </div>
+{% endif %}
