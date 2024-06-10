@@ -52,6 +52,9 @@
     </form>
     {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        <div class="auth_social_container">
+            <p>or {{ form_type }} with</p>
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
     {% endif %}
 </div>

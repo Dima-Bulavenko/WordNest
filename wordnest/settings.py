@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 
 from decouple import config
-
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,6 +44,10 @@ INSTALLED_APPS = [
     'dictionary',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+
 ]
 
 MIDDLEWARE = [
@@ -161,6 +164,39 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
 if DEBUG is True:
     ACCOUNT_RATE_LIMITS = False
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'EMAIL_AUTHENTICATION': True,  # https://docs.allauth.org/en/latest/socialaccount/configuration.html
+        'SCOPE': ['email'],
+        'APP': {
+            'client_id': config("GOOGLE_CLIENT_ID"),
+            'secret': config("GOOGLE_CLIENT_SECRET"),
+            'key': ''
+        },
+        'AUTH_PARAMS': {
+            'prompt': 'select_account',
+            'access_type': 'offline',
+        }
+    },
+     'facebook': {
+         'EMAIL_AUTHENTICATION': True,
+         'APP': {
+             "client_id": config("FACEBOOK_CLIENT_ID"),
+             "secret": config("FACEBOOK_CLIENT_SECRET"),
+             "key": ""
+         },
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'EXCHANGE_TOKEN': True,
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v13.0',
+        'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
+    }
+}
 
 # SMTP settings
 if DEBUG is True:
