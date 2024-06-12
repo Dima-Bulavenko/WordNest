@@ -14,6 +14,7 @@ from pathlib import Path
 
 from decouple import config
 from django.urls import reverse_lazy
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,15 +87,16 @@ WSGI_APPLICATION = 'wordnest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Set DATABASE_URL environment variable in live server
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
-    }
+    'default': dj_database_url.config(
+        default=(
+            f"postgres://{config('DB_USER')}:"
+            f"{config('DB_PASSWORD')}@"
+            f"{config('DB_HOST')}:{config('DB_PORT')}/"
+            f"{config('DB_NAME')}"
+        ),
+    )
 }
 
 
