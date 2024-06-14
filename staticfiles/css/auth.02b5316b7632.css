@@ -1,0 +1,186 @@
+/* User authorization */
+.form-container {
+    width: 92%;
+    background-color: var(--color-2);
+    color: var(--color-4);
+    margin: 10vh auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 10px;
+    border-radius: 10px;
+    border: 3px solid var(--color-1);
+    max-width: 350px;
+}
+
+.form-container > h1 {
+    margin: 0;
+    padding: 0;
+    font-size: var(--large-fs);
+}
+
+.form-container input, textarea {
+    text-align: left;
+}
+
+.form-container a {
+    display: initial;
+}
+
+.auth-link {
+    color: var(--color-3);
+    font-weight: var(--medium-fw);
+}
+
+.form_label {
+    font-size: var(--xsmall-fs);
+    color: var(--color-3);
+    filter: brightness(80%);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.field-wrapper {
+    margin-bottom: 20px;
+}
+
+.field-wrapper:last-of-type {
+    margin-bottom: 40px;
+}
+
+.required {
+    color: red;
+}
+
+.field-wrapper input {
+    background-color: var(--color-4);
+    height: 35px;
+    width: 85%;
+    border-radius: 10px;
+    border: 3px solid var(--color-1);
+    padding: 5px 10px;
+}
+
+.field_icon_wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.field_icon_wrapper input {
+    width: 100%;
+}
+
+.field_icon_wrapper svg {
+    position: absolute;
+    left: 100%;
+    transform: translateX(-150%);
+    align-self: center;
+    
+}
+
+.info_icon.active path {
+    fill: var(--color-1);
+}
+
+.field-wrapper input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: var(--color-2);
+}
+.field-wrapper input::-moz-placeholder { /* Firefox 19+ */
+    color: var(--color-2);
+}
+.field-wrapper input:-ms-input-placeholder { /* IE 10+ */
+    color: var(--color-2);
+}
+.field-wrapper input:-moz-placeholder { /* Firefox 18- */
+    color: var(--color-2);
+}
+
+.help_text {
+    display: none;
+}
+
+.help_text.active {
+    display: block;
+}
+
+.field_messages ul, .errorlist.nonfield {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+}
+
+.errors, .errorlist {
+    color: red;
+}
+
+.submit_bt {
+    display: block;
+    background-color: var(--color-1);
+    color: var(--color-2);
+    font-weight: var(--bold-fw);
+    font-size: var(--small-fs);
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-width: 60%;
+    width: fit-content;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.remember_field_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.remember_field_wrapper > .field_icon_wrapper {
+    width: fit-content
+}
+
+label[for="id_remember"] {
+    margin: 0;
+}
+#id_remember {
+    height: 20px;
+    width: 20px;
+}
+
+.forgot_pwd {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.errorlist.nonfield {
+    transform: translateY(-30%);
+}
+
+/* Style for social account links */
+
+.auth_social_container {
+    align-self: center;
+    transform: translateY(-20px);
+    font-size: var(--small-fs);
+}
+
+.social_account_container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.social_account_container img {
+    transition: filter 0.5s;
+    width: 35px;
+    height: 35px;
+}
+
+.social_account_container img, .submit_bt {
+    transition: filter 0.5s;
+}
+
+.social_account_container img:hover, .submit_bt:hover {
+    filter: brightness(50%);
+}
