@@ -86,18 +86,21 @@ WSGI_APPLICATION = 'wordnest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# Set DATABASE_URL environment variable in live server
-DATABASES = {
-    'default': dj_database_url.config(
-        default=(
-            f"postgres://{config('DB_USER')}:"
-            f"{config('DB_PASSWORD')}@"
-            f"{config('DB_HOST')}:{config('DB_PORT')}/"
-            f"{config('DB_NAME')}"
-        ),
-    )
+if DEBUG:
+    DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
+    }
 }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(config('DATABASE_URL'))  # Set DATABASE_URL environment variable on live server
+    }
 
 
 # Password validation
