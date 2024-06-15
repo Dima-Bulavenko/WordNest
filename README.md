@@ -155,6 +155,7 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [JS Hint](https://jshint.com/) to validate JS code.
 -   [django-livereload-server](https://github.com/tjwalch/django-livereload-server) - automatically reload django server when a static file was changed.
 -   [django-allauth](https://docs.allauth.org/en/latest/introduction/index.html) - help to set up social authentication.
+-   [dj-database-url](https://github.com/jazzband/dj-database-url/) - allows to use URLs to connect to DB
 
 
 [Back to the top](#table-of-contents)

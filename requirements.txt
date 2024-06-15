@@ -5,6 +5,7 @@ charset-normalizer==3.3.2
 coverage==7.5.3
 cryptography==42.0.5
 defusedxml==0.7.1
+dj-database-url==2.2.0
 Django==5.0.4
 django-allauth==0.61.1
 django-livereload-server==0.5.1
@@ -24,3 +25,4 @@ tornado==6.4
 typing_extensions==4.11.0
 tzdata==2024.1
 urllib3==2.2.1
+whitenoise==6.6.0
