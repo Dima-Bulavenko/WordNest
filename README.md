@@ -157,7 +157,6 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [django-allauth](https://docs.allauth.org/en/latest/introduction/index.html) - help to set up social authentication.
 -   [dj-database-url](https://github.com/jazzband/dj-database-url/) - allows to use URLs to connect to DB
 
-
 [Back to the top](#table-of-contents)
 
 # Deployment
@@ -167,6 +166,200 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 [Back to the top](#table-of-contents)
 
 ## Heroku
+
+The WordNest project was deployed on a Heroku hosting server. The following steps outline the process of deploying the WordNest project and can be applied to deploy another Django project with minor adjustments:
+
+1.  Navigate to your [Heroku dashboard](https://dashboard.heroku.com/apps) and create a new app with a unique name.
+
+2.  Install [decouple](https://pypi.org/project/python-decouple/) to manage environment variables.
+
+    ```
+    pip install python-decouple
+    ```
+
+    <sub>**Note**: Decouple is a useful library that allows you to separate local and production settings for Django projects.</sub>
+
+3.  Create a `.env` file in the root directory of your project.
+
+4.  Add the following text to `.gitignore` file. This makes `git` ignore `.env` file.
+
+    ```
+    .env
+    ```
+
+5.  Add `DEBUG=True` to the `.env` file.
+
+6.  Import `decouple` in the `settings.py`.
+
+    ```python
+    from decouple import config
+    ```
+
+7.  Replace `DEBUG` variable in the `settings.py` with the following code:
+
+    ```python
+    DEBUG = config("DEBUG", default=False, cast=bool)
+    ```
+
+8.  Install `gunicorn` as a production-ready webserver for Heroku with command.
+
+    ```
+    pip install gunicorn
+    ```
+
+9.  Create a file named `Procfile` at the root directory of the project.
+
+10. Add following command to `Procfile` to run your server in production.
+
+    ```
+    web: gunicorn wordnest.wsgi
+    ```
+
+    <sub>**Note**: Replace `wordnest` with your project name</sub>
+
+11. In the `settings.py` file update the `ALLOWED_HOSTS` variable.
+
+    ```python
+    ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+    ```
+
+12. Install [dj-database-url](https://pypi.org/project/dj-database-url/).
+
+    ```
+    pip install dj-database-url
+    ```
+
+13. Import `dj-database-url` in `settings.py`.
+
+    ```python
+    import dj_database_url
+    ```
+
+14. Install [psycopg2](https://pypi.org/project/psycopg2/) to connect to PostgreSQL database.
+
+    ```
+    pip install psycopg2
+    ```
+
+15. In the `settings.py` replace `DATABASES` with the following code:
+
+    ```python
+    if DEBUG:
+        DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config("DB_NAME"),
+            "USER": config("DB_USER"),
+            "PASSWORD": config("DB_PASSWORD"),
+            "HOST": config("DB_HOST"),
+            "PORT": config("DB_PORT"),
+            }
+        }
+    else:
+        DATABASES = {
+            'default': dj_database_url.parse(config('DATABASE_URL'))
+        }
+    ```
+
+    <sub>**Note**: Replace `if` clause with your own database for local development</sub>
+
+16. In the `.env` file update the `DEBUG` environment variable and add `DATABASE_URL` new one.
+
+    ```
+    DEBUG=False
+    DATABASE_URL=add_URL_of_a_remote_database
+    ```
+
+    <sub>**Note**: For the WordNest I used database URL provided by `Code Institute` but you can use other database hosting services< such as [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/)/sub>
+
+17. **Reload your terminal** and run the following command in **terminal** to migrate remote database.
+
+    ```
+    python manage.py migrate
+    ```
+
+18. Replace `DEBUG=False` to `DEBUG=True` in the `.env` file.
+
+19. Return to the [Heroku dashboard](https://dashboard.heroku.com/apps/wordnest) navigate to the **Settings** tab and click on **Reveal Config Var** and add `DATABASE_URL` environment variable.
+
+20. Install [whitenoise](https://pypi.org/project/whitenoise/) to manage static files on production server.
+
+    ```
+    pip install whitenoise
+    ```
+
+21. Add `whitenoise` to the `MIDDLEWARE` list in the `settings.py`.
+
+    ```python
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        'whitenoise.middleware.WhiteNoiseMiddleware',
+    ]
+    ```
+
+    <sub>**Note**: The WhiteNoise middleware must be placed directly after the Django `SecurityMiddleware`</sub>
+
+22. Add `STATIC_ROOT` and `STORAGES` variables to the `settings.py`.
+
+    ```python
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+    STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
+    ```
+
+23. Run the following command in **terminal** to collect static files.
+
+    ```
+    python manage.py collectstatic
+    ```
+
+24. From the terminal, check the Python version used in your IDE.
+
+    ```
+    python --version
+    ```
+
+25. Look up the [supported runtimes here](https://devcenter.heroku.com/articles/python-support#specifying-a-python-version) and copy the runtime closest to the one used in your IDE.
+
+26. Add a `runtime.txt` file to your app's root directory.
+
+27. Paste the copied runtime into the `runtime.txt` file.
+
+28. Update `requirements.txt`.
+
+    ```
+    pip freeze > requirements.txt
+    ```
+
+29. Add and commit all changes to the repository.
+
+    ```
+    git add .
+    git commit -m "Deploying to Heroku"
+    ```
+
+30. Push the changes to your remote branch that you intend to deploy.
+
+    ```
+    git push
+    ```
+
+31. On the [Heroku dashboard](https://dashboard.heroku.com/apps), and in your app, click on the **Deploy** tab.
+
+32. In the **Deployment method** section enable GitHub integration by clicking on **Connect to GitHub**.
+
+33. Start typing your project repo name into the search box and click **Search**. A list of repositories from your GitHub account should appear. Click on the GitHub repo you want to deploy from.
+
+34. Scroll to the bottom of the page in the **Manual deploy** section, choose branch you want to deploy and click **Deploy Branch** to start a manual deployment of the branch.
+
+35. Open the **Resources** tab and choose an eco dyno. This dyno is a lightweight container to run your project.
+
+36. Verify there is no existing Postgres database **add-on**. if there is a database add-on select **Delete Add-on** to remove it.
+
+37. Click on **Open app** to view your deployed project.
 
 [Back to the top](#table-of-contents)
 
@@ -185,6 +378,7 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 [Back to the top](#table-of-contents)
 
 ## Design Template
+
 [Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
 
 [Back to the top](#table-of-contents)
