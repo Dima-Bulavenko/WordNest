@@ -59,6 +59,16 @@ a {
     display: block;
 }
 
+input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]) {
+    outline : none;
+    border: 1px solid var(--color-2);
+    border-radius: 5px;
+}
+
+input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]):focus-visible {
+    border: 3px solid var(--color-1);
+}
+
 /* Mobile */
 
 /* Header */
@@ -306,6 +316,53 @@ a {
     font-size: var(--large-fs);
 }
 
+/* Dictionary section */
+#search_container {
+    padding: 20px var(--mob-side-padding);
+    display: flex;
+}
+
+#search_bar {
+    width: 100%;
+}
+
+#word {
+    height: 40px;
+    width: 100%;
+    padding: 0 10px;
+}
+
+#translate_word {
+    display: none;
+    width: 60px;
+    align-content: center;
+    margin-left: 10px;
+    background-color: var(--color-1);
+    text-align: center;
+    border-radius: 5px;
+    font-weight: var(--bold-fw);
+    transition: all 0.5s;
+}
+
+#search_results {
+    max-width: 70vw;
+}
+
+#translate_word img {
+    width: 25px;
+    height: 25px;
+}
+
+.tippy-box {
+    border: 1px solid #ccc;
+    background-color: var(--color-1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+#translate_word:active {
+    transform: scale(1.2);
+}
+
 /* Media query: Tablet screen size */
 @media screen and (min-width: 768px) {
     /* Header */
@@ -456,4 +513,12 @@ a {
         transform: scale(1.1);
     }
 
+    /* Dictionary section */
+    #translate_word {
+        opacity: 0.5;
+    }
+
+    #translate_word:hover {
+        opacity: 1;
+    }
 }
