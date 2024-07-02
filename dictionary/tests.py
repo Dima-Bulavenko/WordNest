@@ -1,6 +1,7 @@
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
+from azure.core.exceptions import HttpResponseError
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import NoReverseMatch, reverse
@@ -214,6 +215,63 @@ class TranslationAPITest(TestCase):
                                                      from_language=api.from_language,
                                                      to_language=[api.to_language])
         mock_get_templated_data.assert_called_once_with(not_templated_test_data[0])
+
+    def test_lookup_dictionary_entries_no_errors(self):
+        not_templated_test_data = [{"test": "not templated data"}]
+        templated_test_data = {"test": "templated data"}
+
+        api = TranslationAPI(**self.params)
+        api.client.lookup_dictionary_entries.return_value = not_templated_test_data
+        mock_get_templated_data = patch.object(api, "get_templated_data").start()
+        mock_has_translation = patch.object(api, "has_translation").start()
+        mock_get_templated_data.return_value = templated_test_data
+        mock_has_translation.return_value = True
+
+        data = api.lookup_dictionary_entries()
+
+        self.assertEqual(data, templated_test_data)
+        api.client.lookup_dictionary_entries.assert_called_once_with(body=[api.body],
+                                                                     from_language=api.from_language,
+                                                                     to_language=api.to_language)
+        mock_has_translation.assert_called_once_with(not_templated_test_data[0])
+        mock_get_templated_data.assert_called_once_with(not_templated_test_data[0])
+    
+    def test_lookup_dictionary_entries_with_error_code_400050(self):
+        api = TranslationAPI(**self.params)
+        patch.object(api, "get_templated_data").start()
+        patch.object(api, "has_translation").start()
+        mock_exception = HttpResponseError()
+        mock_exception.error = MagicMock()
+        mock_exception.error.code = 400050
+        api.client.lookup_dictionary_entries.side_effect = mock_exception
+
+        data = api.lookup_dictionary_entries()
+
+        self.assertEqual(data, None)
+        api.client.lookup_dictionary_entries.assert_called_once_with(body=[api.body],
+                                                                     from_language=api.from_language,
+                                                                     to_language=api.to_language)
+        api.has_translation.assert_not_called()
+        api.get_templated_data.assert_not_called()
+    
+    def test_lookup_dictionary_entries_raise_exception(self):
+        api = TranslationAPI(**self.params)
+        patch.object(api, "get_templated_data").start()
+        patch.object(api, "has_translation").start()
+        mock_exception = HttpResponseError()
+        mock_exception.error = MagicMock()
+        mock_exception.error.code = 4
+
+        api.client.lookup_dictionary_entries.side_effect = mock_exception
+
+        with self.assertRaises(HttpResponseError):
+            api.lookup_dictionary_entries()
+        
+        api.client.lookup_dictionary_entries.assert_called_once_with(body=[api.body],
+                                                                     from_language=api.from_language,
+                                                                     to_language=api.to_language)
+        api.has_translation.assert_not_called()
+        api.get_templated_data.assert_not_called()
 
 
         
