@@ -198,6 +198,23 @@ class TranslationAPITest(TestCase):
         mock_lookup_dictionary_entries.assert_called_once()
         mock_translate_text.assert_called_once()
 
+    def test_translate_text(self):
+        not_templated_test_data = [{"test": "not templated data"}]
+        templated_test_data = {"test": "templated data"}
+        api = TranslationAPI(**self.params)
+        mock_get_templated_data = patch.object(api,
+                                               "get_templated_data",
+                                               return_value=templated_test_data).start()
+        api.client.translate.return_value = not_templated_test_data
+
+        data = api.translate_text()
+        
+        self.assertEqual(data, templated_test_data)
+        api.client.translate.assert_called_once_with(body=[api.body],
+                                                     from_language=api.from_language,
+                                                     to_language=[api.to_language])
+        mock_get_templated_data.assert_called_once_with(not_templated_test_data[0])
+
 
         
 
