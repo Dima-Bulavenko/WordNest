@@ -9,6 +9,7 @@ from django.urls import NoReverseMatch, reverse
 from dictionary.forms import LoginForm
 from dictionary.models import User
 from dictionary.search_manager import TranslationAPI
+from azure.ai.translation.text.models import DictionaryLookupItem, TranslatedTextItem
 
 
 class UserSetUpMixing:
@@ -272,6 +273,39 @@ class TranslationAPITest(TestCase):
                                                                      to_language=api.to_language)
         api.has_translation.assert_not_called()
         api.get_templated_data.assert_not_called()
+
+    def test_get_templated_data_with_text_translated(self):
+        translations = [MagicMock(), MagicMock(), MagicMock(), MagicMock()]
+        data = MagicMock(spec=TranslatedTextItem)
+        data.translations = translations
+
+        api = TranslationAPI(**self.params)
+        result = api.get_templated_data(data)
+        translations = result["translations"]
+        check_translations = [trans['pos'] == "" and trans["prefix_word"] == "" for trans in translations]
+
+        self.assertEqual(result["form_lang"], api.from_language)
+        self.assertEqual(result["to_lang"], api.to_language)
+        self.assertEqual(result["word"], api.body)
+        self.assertTrue(len(result["translations"]) <= 3)
+        self.assertTrue(all(check_translations))
+    
+    def test_get_templated_data_with_dict_translated(self):
+        translations = [MagicMock(), MagicMock(), MagicMock(), MagicMock()]
+        data = MagicMock()
+        data.translations = translations
+
+        api = TranslationAPI(**self.params)
+        result = api.get_templated_data(data)
+        translations = result["translations"]
+        check_translations = [isinstance(trans['pos'], MagicMock) and
+                              isinstance(trans["prefix_word"], MagicMock) for trans in translations]
+
+        self.assertEqual(result["form_lang"], api.from_language)
+        self.assertEqual(result["to_lang"], api.to_language)
+        self.assertEqual(result["word"], api.body)
+        self.assertTrue(len(result["translations"]) <= 3)
+        self.assertTrue(all(check_translations))
 
 
         
