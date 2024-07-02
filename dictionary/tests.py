@@ -7,6 +7,7 @@ from django.urls import NoReverseMatch, reverse
 
 from dictionary.forms import LoginForm
 from dictionary.models import User
+from dictionary.search_manager import TranslationAPI
 
 
 class UserSetUpMixing:
@@ -140,6 +141,38 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(path_to_template, response.template_name)
         self.assertEqual(response.context_data["title"], context_title)
+
+
+class TranslationAPITest(TestCase):
+    def setUp(self):
+        self.mock_config = patch("dictionary.search_manager.config").start()
+        self.mock_client = patch("dictionary.search_manager.TextTranslationClient").start()
+        self.mock_credentials = patch("dictionary.search_manager.AzureKeyCredential").start()
+        
+        self.addCleanup(patch.stopall)  # Stop all patches after test
+
+        self.mock_config.return_value = "test_key"
+        self.mock_credentials.return_value = "test_credentials"
+
+        self.params = {"from_language": "en", "to_language": "es", "body": "Hello"}
+    
+    def test_init(self):
+        
+        api = TranslationAPI(**self.params)
+
+        self.assertTrue(hasattr(api, "client"))
+        self.assertTrue(api.from_language == self.params["from_language"])
+        self.assertTrue(api.to_language == self.params["to_language"])
+        self.assertTrue(api.body == self.params["body"])
+
+        self.mock_config.assert_called_once_with("AZURE_TRANSLATOR_KEY")
+        self.mock_credentials.assert_called_once_with(self.mock_config.return_value)
+        self.mock_client.assert_called_once_with(credential=self.mock_credentials.return_value)
+    
+
+        
+
+
         
         
 
