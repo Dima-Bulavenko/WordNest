@@ -1,6 +1,7 @@
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+from azure.ai.translation.text.models import TranslatedTextItem
 from azure.core.exceptions import HttpResponseError
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -9,7 +10,6 @@ from django.urls import NoReverseMatch, reverse
 from dictionary.forms import LoginForm
 from dictionary.models import User
 from dictionary.search_manager import TranslationAPI
-from azure.ai.translation.text.models import DictionaryLookupItem, TranslatedTextItem
 
 
 class UserSetUpMixing:
@@ -306,6 +306,22 @@ class TranslationAPITest(TestCase):
         self.assertEqual(result["word"], api.body)
         self.assertTrue(len(result["translations"]) <= 3)
         self.assertTrue(all(check_translations))
+
+    def test_has_translation_with_translations(self):
+        data = {"translations": ["test_translation"]}
+
+        api = TranslationAPI(**self.params)
+        result = api.has_translation(data)
+
+        self.assertTrue(result)
+    
+    def test_has_translation_without_translations(self):
+        data = {"translations": []}
+
+        api = TranslationAPI(**self.params)
+        result = api.has_translation(data)
+
+        self.assertFalse(result)
 
 
         
