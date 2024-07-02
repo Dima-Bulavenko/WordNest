@@ -169,6 +169,35 @@ class TranslationAPITest(TestCase):
         self.mock_credentials.assert_called_once_with(self.mock_config.return_value)
         self.mock_client.assert_called_once_with(credential=self.mock_credentials.return_value)
     
+    def test_translate_has_dictionary_entries(self):
+        test_data = {"test": "dictionary entries"}
+        api = TranslationAPI(**self.params)
+        mock_lookup_dictionary_entries = patch.object(api, "lookup_dictionary_entries").start()
+        mock_translate_text = patch.object(api, "translate_text").start()
+
+        mock_lookup_dictionary_entries.return_value = test_data
+
+        data = api.translate()
+        
+        self.assertEqual(data, test_data)
+        mock_lookup_dictionary_entries.assert_called_once()
+        mock_translate_text.assert_not_called()
+    
+    def test_translate_no_dictionary_entries(self):
+        test_data = {"test": "translation"}
+        api = TranslationAPI(**self.params)
+        mock_lookup_dictionary_entries = patch.object(api, "lookup_dictionary_entries").start()
+        mock_translate_text = patch.object(api, "translate_text").start()
+
+        mock_lookup_dictionary_entries.return_value = None
+        mock_translate_text.return_value = test_data
+
+        data = api.translate()
+        
+        self.assertEqual(data, test_data)
+        mock_lookup_dictionary_entries.assert_called_once()
+        mock_translate_text.assert_called_once()
+
 
         
 
