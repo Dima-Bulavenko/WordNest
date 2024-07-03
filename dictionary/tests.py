@@ -4,12 +4,13 @@ from unittest.mock import MagicMock, patch
 from azure.ai.translation.text.models import TranslatedTextItem
 from azure.core.exceptions import HttpResponseError
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import NoReverseMatch, reverse
 
 from dictionary.forms import LoginForm
 from dictionary.models import User
 from dictionary.search_manager import TranslationAPI
+from dictionary.views import TranslationView
 
 
 class UserSetUpMixing:
@@ -344,6 +345,7 @@ class TranslationViewTest(TestCase):
         self.trans_api = patch("dictionary.views.TranslationAPI").start()
         self.trans_api.return_value.translate.return_value = self.get_translations()
         self.addCleanup(patch.stopall)
+        self.request_factory = RequestFactory()
 
     def test_post_request_ajax(self):
         response = self.client.post(
@@ -366,3 +368,25 @@ class TranslationViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+    
+    def test_is_ajax_true(self):
+        request = self.request_factory.post(
+            self.url,
+            data=self.params,
+            headers=self.headers
+        )
+        view = TranslationView()
+        view.request = request
+        
+        self.assertTrue(view.is_ajax())
+    
+    def test_is_ajax_false(self):
+        self.headers.pop("X-Requested-With")
+        request = self.request_factory.post(
+            self.url,
+            data=self.params
+        )
+        view = TranslationView()
+        view.request = request
+        
+        self.assertFalse(view.is_ajax())
