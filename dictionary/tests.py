@@ -324,16 +324,45 @@ class TranslationAPITest(TestCase):
         self.assertFalse(result)
 
 
-        
+class TranslationViewTest(TestCase):
+    def get_translations(self):
+        return {
+            "form_lang": self.params["from_language"],
+            "to_lang": self.params["to_language"],
+            "word": self.params["body"],
+            "translations": [
+                {"text": "здравствуйте", "pos": "NOUN", "prefix_word": ""},
+                {"text": "привіт", "pos": "NOUN", "prefix_word": ""},
+                {"text": "здрастуйте", "pos": "NOUN", "prefix_word": ""},
+            ],
+        }
 
+    def setUp(self):
+        self.url = reverse("translation")
+        self.params = {"from_language": "en", "to_language": "uk", "body": "Hello"}
+        self.headers = {"X-Requested-With": "XMLHttpRequest"}
+        self.trans_api = patch("dictionary.views.TranslationAPI").start()
+        self.trans_api.return_value.translate.return_value = self.get_translations()
+        self.addCleanup(patch.stopall)
 
+    def test_post_request_ajax(self):
+        response = self.client.post(
+            self.url,
+            data=self.params,
+            headers=self.headers,
+            content_type="application/json",
+        )
         
-        
-
-        
-
-        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), self.get_translations())
+        self.trans_api.assert_called_once_with(**self.params)
+        self.trans_api.return_value.translate.assert_called_once()
     
-        
-        
-        
+    def test_post_request_not_ajax(self):
+        response = self.client.post(
+            self.url,
+            data=self.params,
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 404)
