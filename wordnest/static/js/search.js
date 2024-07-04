@@ -115,3 +115,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     runButton.addEventListener("click", () => translationTippy.show());
 });
+
+module.exports = { showRunButton };
