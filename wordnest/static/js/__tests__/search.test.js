@@ -37,3 +37,36 @@ describe("showRunButton", () => {
         expect(runButton.style.display).toBe("none");
     });
 });
+
+describe("createSearchResults", () => {
+    let createSearchResults;
+    createSearchResults = require("../search").createSearchResults;
+
+    test("createSearchResults creates a div element with search results", () => {
+        const translations = [
+            { text: "Translation 1" },
+            { text: "Translation 2" },
+        ];
+
+        const searchResults = createSearchResults(translations);
+
+        expect(searchResults.id).toBe("search_results");
+        expect(searchResults.children.length).toBe(2);
+
+        for (let i = 0; i < translations.length; i++) {
+            const resultElement = searchResults.children[i];
+            expect(resultElement.className).toBe("search_result");
+            expect(resultElement.innerText).toBe(translations[i].text);
+        }
+    });
+
+    test("createSearchResults creates a div element with no results found", () => {
+        const translations = [{ text: "" }, { text: "" }];
+
+        const searchResults = createSearchResults(translations);
+
+        expect(searchResults.id).toBe("search_results");
+        expect(searchResults.children.length).toBe(0);
+        expect(searchResults.innerText).toBe("No results found");
+    });
+});
