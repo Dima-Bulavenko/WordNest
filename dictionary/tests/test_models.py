@@ -83,3 +83,68 @@ class TranslationTest(TestCase):
     def test_str_method(self):
         translation = Translation.objects.create(from_word=self.word1, to_word=self.word2)
         self.assertEqual(str(translation), "hello -> привіт")
+
+
+class DictionaryTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(email="test_user")
+        self.language1 = Language.objects.create(code="en", name="English")
+        self.language2 = Language.objects.create(code="uk", name="Ukrainian")
+        self.word1 = Word.objects.create(word="hello", language=self.language1)
+        self.word2 = Word.objects.create(word="привіт", language=self.language2)
+    
+    def test_create_dictionary(self):
+        dictionary = Dictionary.objects.create(
+            user=self.user,
+            source_language=self.language1,
+            target_language=self.language2
+        )
+        
+        self.assertEqual(dictionary.user, self.user)
+        self.assertEqual(dictionary.source_language, self.language1)
+        self.assertEqual(dictionary.target_language, self.language2)
+    
+    def test_str_method(self):
+        dictionary = Dictionary.objects.create(
+            user=self.user,
+            source_language=self.language1,
+            target_language=self.language2
+        )
+        
+        self.assertEqual(str(dictionary), f"{self.user}'s dictionary")
+    
+    def test_translations_many_to_many_field(self):
+        dictionary = Dictionary.objects.create(
+            user=self.user,
+            source_language=self.language1,
+            target_language=self.language2
+        )
+        
+        dictionary.translations.add(Translation.objects.create(from_word=self.word1, to_word=self.word2))
+        
+        self.assertEqual(dictionary.translations.count(), 1)
+        self.assertTrue(self.word2 == dictionary.translations.all()[0].to_word)
+        self.assertTrue(self.word1 == dictionary.translations.all()[0].from_word)
+    
+    def test_unique_language_pair_per_user_constraint(self):
+        Dictionary.objects.create(
+            user=self.user,
+            source_language=self.language1,
+            target_language=self.language2
+        )
+        
+        with self.assertRaises(IntegrityError):
+            Dictionary.objects.create(
+                user=self.user,
+                source_language=self.language1,
+                target_language=self.language2
+            )
+    
+    def test_different_languages_constraint(self):
+        with self.assertRaises(IntegrityError):
+            Dictionary.objects.create(
+                user=self.user,
+                source_language=self.language1,
+                target_language=self.language1
+            )
+
