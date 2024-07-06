@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
+from django.db.models import F, Q
 from django.forms import ValidationError
 
 
@@ -124,6 +125,18 @@ class Dictionary(models.Model):
     target_language = models.ForeignKey(
         Language, related_name="+", on_delete=models.CASCADE
     )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=~Q(source_language=F('target_language')), 
+                name='different_languages'
+            ),
+            models.UniqueConstraint(
+                fields=['user', 'source_language', 'target_language'],
+                name='unique_language_pair_per_user'
+            )
+        ]
 
     def __str__(self):
         return f"{self.user}'s dictionary"
