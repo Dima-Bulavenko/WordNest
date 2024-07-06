@@ -5,4 +5,20 @@
     {% trans title %}
 {% endblock title %}
 {% block content %}
+    <div class="dictionary_container">
+        <div id="search_container">
+            <div id="search_bar">
+                <input type="text" placeholder="Search" name="word" id="word">
+            </div>
+            <div id="translate_word">
+                <img src="{% static "img/search_icon.svg" %}" alt="search_icon">
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+{% block js_block %}
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock js_block %}
