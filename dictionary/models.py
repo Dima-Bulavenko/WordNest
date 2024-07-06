@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
+from django.forms import ValidationError
 
 
 class UserManager(BaseUserManager):
@@ -55,3 +56,74 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         "Each superuser is a staff member."
         return self.is_superuser
+
+
+class Word(models.Model):
+    word = models.TextField()
+    language = models.ForeignKey("Language", on_delete=models.CASCADE)
+    translations = models.ManyToManyField(
+        "self",
+        through="Translation",
+        symmetrical=False,
+        related_name="translated_words",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["word", "language"], name="unique_word_language"
+            )
+        ]
+
+    def __str__(self):
+        return self.word
+
+
+class Language(models.Model):
+    code = models.CharField(max_length=5, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Translation(models.Model):
+    from_word = models.ForeignKey(
+        Word, on_delete=models.CASCADE, related_name="source_word"
+    )
+    to_word = models.ForeignKey(
+        Word, on_delete=models.CASCADE, related_name="target_word"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["to_word", "from_word"],
+                name="unique_translation_pair_reverse"
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.from_word} -> {self.to_word}"
+    
+    def save(self, *args, **kwargs):
+        if self.from_word.language == self.to_word.language:
+            raise ValidationError("from_word and to_word cannot have the same language.")
+        super().save(*args, **kwargs)
+
+
+class Dictionary(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    translations = models.ManyToManyField(Translation, related_name="+")
+    source_language = models.ForeignKey(
+        Language, related_name="+", on_delete=models.CASCADE
+    )
+    target_language = models.ForeignKey(
+        Language, related_name="+", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"{self.user}'s dictionary"
