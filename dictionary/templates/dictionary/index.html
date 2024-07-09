@@ -12,10 +12,20 @@
         <div class="dictionaries_container">
             {% for dictionary in dictionaries %}
                 <div class="dictionary">
-                    <p>{{ dictionary }}</p>
+                    <a href="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}">
+                        <div class="dictionary_name">
+                            {{ dictionary.source_language.name }} - {{ dictionary.target_language.name }}
+                        </div>
+                    </a>
+                    <div class="word_amount">
+                        {{ dictionary.translations.count }} words
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        <a href="{% url 'create_dictionary' %}">
+            <div class="submit_bt">Create dictionary</div>
+        </a>
     {% else %}
         <div class="no_dictionaries">
             <div>You don't have any dictionary</div>
