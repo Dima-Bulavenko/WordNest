@@ -117,7 +117,7 @@ class Translation(models.Model):
 
 
 class Dictionary(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dictionaries")
     translations = models.ManyToManyField(Translation, related_name="+")
     source_language = models.ForeignKey(
         Language, related_name="+", on_delete=models.CASCADE
@@ -130,7 +130,8 @@ class Dictionary(models.Model):
         constraints = [
             models.CheckConstraint(
                 check=~Q(source_language=F('target_language')), 
-                name='different_languages'
+                name='different_languages',
+                violation_error_message='Source and target languages must be different.'
             ),
             models.UniqueConstraint(
                 fields=['user', 'source_language', 'target_language'],
