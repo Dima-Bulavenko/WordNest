@@ -362,6 +362,23 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 #translate_word:active {
     transform: scale(1.2);
 }
+.no_dictionaries {
+    min-width: 290px;
+    max-width: 340px;
+    margin: 25vh 5% 0;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--color-2);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+.no_dictionaries > div {
+    text-align: center;
+    font-size: var(--small-fs);
+    font-weight: var(--bold-fw);
+    color: var(--color-1);
+    margin-bottom: 30px;
+}
 
 /* Media query: Tablet screen size */
 @media screen and (min-width: 768px) {
@@ -413,6 +430,13 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
         grid-column: 1 / -1;
         grid-row: 3 / 4;
     }
+
+    /* Dictionary section */
+    .no_dictionaries {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 }
 
 /* Media query: Desktop screen size */
