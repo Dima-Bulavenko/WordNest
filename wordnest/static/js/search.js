@@ -69,6 +69,8 @@ function translateText(instance) {
     if (instance._isFetching) return;
 
     const text = textElement.value.trim();
+    const sourceLang = document.querySelector('[name="source_language"]').value;
+    const targetLang = document.querySelector('[name="target_language"]').value;
     instance._isFetching = true;
     fetch("/translate/", {
         method: "POST",
@@ -79,8 +81,8 @@ function translateText(instance) {
         },
         body: JSON.stringify({
             body: text,
-            from_language: "en",
-            to_language: "uk",
+            from_language: sourceLang,
+            to_language: targetLang,
         }),
     })
         .then((response) => {
