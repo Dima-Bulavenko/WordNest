@@ -4,21 +4,34 @@
 {% block title %}
     {% trans title %}
 {% endblock title %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static "css/auth.css" %}">
+{% endblock css_block %}
 {% block content %}
-    <div class="dictionary_container">
-        <div id="search_container">
-            <div id="search_bar">
-                <input type="text" placeholder="Search" name="word" id="word">
-            </div>
-            <div id="translate_word">
-                <img src="{% static "img/search_icon.svg" %}" alt="search_icon">
-            </div>
+    {% if dictionaries %}
+        <div class="dictionaries_container">
+            {% for dictionary in dictionaries %}
+                <div class="dictionary">
+                    <a href="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}">
+                        <div class="dictionary_name">
+                            {{ dictionary.source_language.name }} - {{ dictionary.target_language.name }}
+                        </div>
+                    </a>
+                    <div class="word_amount">
+                        {{ dictionary.translations.count }} words
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </div>
+        <a href="{% url 'create_dictionary' %}">
+            <div class="submit_bt">Create dictionary</div>
+        </a>
+    {% else %}
+        <div class="no_dictionaries">
+            <div>You don't have any dictionary</div>
+            <a href="{% url 'create_dictionary' %}">
+                <div class="submit_bt">Create dictionary</div>
+            </a>
+        </div>
+    {% endif %}
 {% endblock content %}
-{% block js_block %}
-    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <script src="{% static 'js/search.js' %}"></script>
-{% endblock js_block %}
