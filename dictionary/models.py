@@ -153,9 +153,9 @@ class Translation(models.Model):
         with transaction.atomic():
             source_lang = Language.objects.get(code=source_lang_code)
             target_lang = Language.objects.get(code=target_lang_code)
-            from_word = Word.objects.get_or_create(word=word, language=source_lang)[0]
+            from_word = Word.objects.get_or_create(word=word.lower(), language=source_lang)[0]
             for translation in translations:
-                to_word = Word.objects.get_or_create(word=translation["text"], language=target_lang)[0]
+                to_word = Word.objects.get_or_create(word=translation["text"].lower(), language=target_lang)[0]
                 cls.objects.get_or_create(from_word=from_word, to_word=to_word)
 
 
