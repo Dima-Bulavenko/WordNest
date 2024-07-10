@@ -3,10 +3,9 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F, Q
 from django.forms import ValidationError
-from django.db import transaction
 
 
 class UserManager(BaseUserManager):
@@ -82,6 +81,10 @@ class Word(models.Model):
     def __str__(self):
         return self.word
 
+    def save(self, *args, **kwargs):
+        self.word = self.word.lower()
+        super().save(*args, **kwargs)
+
 
 class Language(models.Model):
     code = models.CharField(max_length=5, unique=True)
@@ -132,7 +135,7 @@ class Translation(models.Model):
             target_lang_code: str,
             translations: list
         ) -> None:
-        """ 
+        """
         Creates translations for a given word from one language to another.
 
         This method retrieves or creates Word instances for the given word and its translations, 
@@ -169,7 +172,7 @@ class Dictionary(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=~Q(source_language=F('target_language')), 
+                check=~Q(source_language=F('target_language')),
                 name='different_languages',
                 violation_error_message='Source and target languages must be different.'
             ),
