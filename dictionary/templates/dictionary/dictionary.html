@@ -8,6 +8,8 @@
     <div class="dictionary_container">
         <div id="search_container">
             <div id="search_bar">
+                <input type="hidden" name="source_language" value="{{ dictionary.source_language.code }}">
+                <input type="hidden" name="target_language" value="{{ dictionary.target_language.code }}">
                 <input type="text" placeholder="Search" name="word" id="word">
             </div>
             <div id="translate_word">
