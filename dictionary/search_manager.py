@@ -5,6 +5,9 @@ from azure.ai.translation.text.models import DictionaryLookupItem, TranslatedTex
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import HttpResponseError
 from decouple import config
+from django.db.models import QuerySet
+
+from dictionary.models import Translation
 
 
 class TranslationAPI:
@@ -25,12 +28,13 @@ class TranslationAPI:
         Returns:
             dict: The translated text as a dictionary.
         """
-        data = self.lookup_dictionary_entries()
-        if data:
-            return data
+        if db_translations := self.get_db_translation():
+            return db_translations
+        
+        if dictionary_translations := self.lookup_dictionary_entries():
+            return dictionary_translations
 
-        data = self.translate_text()
-        return data
+        return self.translate_text()
 
     def translate_text(self) -> dict:
         """
@@ -77,7 +81,7 @@ class TranslationAPI:
         return None
 
     def get_templated_data(
-        self, data: Union[DictionaryLookupItem, TranslatedTextItem]
+        self, data: Union[DictionaryLookupItem, TranslatedTextItem, QuerySet]
     ) -> dict:
         """
         Formats the translation data into a specific template.
@@ -98,6 +102,16 @@ class TranslationAPI:
             "word": self.body,
             "translations": [],
         }
+
+        if isinstance(data, QuerySet):
+            for translation in data:
+                translation_data = {
+                    "text": translation.to_word.word,
+                    "pos": "",
+                    "prefix_word": "",
+                }
+                templated_data["translations"].append(translation_data)
+            return templated_data
 
         for trans_num, translation in enumerate(data.translations, 1):
             if trans_num > 3:
@@ -132,3 +146,18 @@ class TranslationAPI:
         """
         key = "translations"
         return key in data and bool(data[key])
+    
+    def get_db_translation(self) -> QuerySet:
+        """
+        Looks up dictionary entries for the text in the database.
+
+        Send a request to the database to look up dictionary entries
+        for the text from the source language to the target language.
+        """
+        data = Translation.get_translations(self.body, self.from_language, self.to_language)
+        templated_data = self.get_templated_data(data)
+        
+        if self.has_translation(templated_data):
+            return templated_data
+        return None
+    
