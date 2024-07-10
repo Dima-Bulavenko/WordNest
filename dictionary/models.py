@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.db.models import F, Q
 from django.forms import ValidationError
+from django.db import transaction
 
 
 class UserManager(BaseUserManager):
@@ -122,6 +123,37 @@ class Translation(models.Model):
             from_word__language__code=source_language,
             to_word__language__code=target_language
         )
+    
+    @classmethod
+    def create_translations(
+            cls,
+            word: str,
+            source_lang_code: str,
+            target_lang_code: str,
+            translations: list
+        ) -> None:
+        """ 
+        Creates translations for a given word from one language to another.
+
+        This method retrieves or creates Word instances for the given word and its translations, 
+        and associates them with the appropriate Language instances. 
+        It also creates Translation instances to represent the translations from the 
+        given word to each of its translations.
+
+        Args:
+            word (str): The word to translate.
+            source_lang_code (str): The language code of the language the word is in.
+            target_lang_code (str): The language code of the language to translate the word to.
+            translations (list): A list of dictionaries, each containing a translation of the word. 
+                                  Each dictionary must have a "text" key associated with the translated word.
+        """
+        with transaction.atomic():
+            source_lang = Language.objects.get(code=source_lang_code)
+            target_lang = Language.objects.get(code=target_lang_code)
+            from_word = Word.objects.get_or_create(word=word, language=source_lang)[0]
+            for translation in translations:
+                to_word = Word.objects.get_or_create(word=translation["text"], language=target_lang)[0]
+                cls.objects.get_or_create(from_word=from_word, to_word=to_word)
 
 
 class Dictionary(models.Model):
