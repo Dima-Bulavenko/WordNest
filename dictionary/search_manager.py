@@ -32,6 +32,7 @@ class TranslationAPI:
             return db_translations
         
         if dictionary_translations := self.lookup_dictionary_entries():
+            self.add_translation_to_db(dictionary_translations)
             return dictionary_translations
 
         return self.translate_text()
@@ -161,3 +162,16 @@ class TranslationAPI:
             return templated_data
         return None
     
+    def add_translation_to_db(self, data: dict):
+        """
+        Adds the translation to the database.
+
+        Parameters:
+            data (dict): The data object containing the translation information.
+        """
+        source_code = data["form_lang"]
+        target_code = data["to_lang"]
+        word = data["word"]
+        translations = data["translations"]
+
+        Translation.create_translations(word, source_code, target_code, translations)
