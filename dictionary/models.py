@@ -98,7 +98,7 @@ class Translation(models.Model):
         Word, on_delete=models.CASCADE, related_name="target_word"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -114,6 +114,14 @@ class Translation(models.Model):
         if self.from_word.language == self.to_word.language:
             raise ValidationError("from_word and to_word cannot have the same language.")
         super().save(*args, **kwargs)
+        
+    @classmethod
+    def get_translations(cls, word, source_language, target_language):
+        return cls.objects.filter(
+            from_word__word=word,
+            from_word__language__code=source_language,
+            to_word__language__code=target_language
+        )
 
 
 class Dictionary(models.Model):
