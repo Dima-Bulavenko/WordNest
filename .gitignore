@@ -169,3 +169,5 @@ cython_debug/
 
 # Node.js ignore
 node_modules/
+
+*.drawio
