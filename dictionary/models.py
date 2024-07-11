@@ -184,3 +184,32 @@ class Dictionary(models.Model):
 
     def __str__(self):
         return f"{self.user}'s dictionary"
+
+    def add_translation(self, from_word: str, to_word: str) -> bool:
+        """
+        Add a translation to the user's dictionary.
+
+        Args:
+            from_word (str): word to translate
+            to_word (str): translation of the word
+
+        Returns:
+            bool: True if the translation was added, False otherwise.
+        """
+        from_word = Word.objects.get(
+            word__iexact=from_word, 
+            language__code=self.source_language.code
+        )
+        to_word = Word.objects.get(
+            word__iexact=to_word, 
+            language__code=self.target_language.code
+        )
+        translation = Translation.objects.get(
+            from_word=from_word, 
+            to_word=to_word
+        )
+        
+        if not self.translations.filter(id=translation.id).exists():
+            self.translations.add(translation)
+            return True
+        return False
