@@ -39,23 +39,30 @@ class IndexView(TemplateView):
         return self.request.user.dictionaries.all()
 
 
-class TranslationView(View):
-    def post(self, request, *args, **kwargs):
-        if self.is_ajax():
-            data = json.loads(request.body.decode("utf-8"))
-            client = TranslationAPI(**data)
-            translation = client.translate()
-            return JsonResponse(translation)
-        raise Http404("Page not fount")
+class AJAXMixing:
+    def setup(self, request, *args, **kwargs):
+        if not self.is_ajax(request):
+            raise Http404("Page not found")
 
-    def is_ajax(self) -> bool:
+        super().setup(request, *args, **kwargs)
+
+    @staticmethod
+    def is_ajax(request) -> bool:
         """
         Checks if the request was made via AJAX.
 
         Returns:
             bool: True if the request was made via AJAX, False otherwise.
         """
-        return self.request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        return request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+
+class TranslationView(AJAXMixing, View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf-8"))
+        client = TranslationAPI(**data)
+        translation = client.translate()
+        return JsonResponse(translation)
 
 
 class CreateDictionaryView(CreateView):
