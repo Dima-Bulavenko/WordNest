@@ -1,5 +1,7 @@
 const textElement = document.getElementById("word");
 const runButton = document.getElementById("translate_word");
+const source_language = document.querySelector('[name="source_language"]');
+const target_language = document.querySelector('[name="target_language"]');
 
 var translationTippy = tippy(textElement, {
     maxWidth: "none",
@@ -51,6 +53,7 @@ function createSearchResults(translations) {
         let resultElement = document.createElement("div");
         resultElement.className = "search_result";
         resultElement.innerText = translation.text;
+        resultElement.addEventListener("click", addWordToDictionary);
         searchResults.appendChild(resultElement);
     }
 
@@ -58,6 +61,55 @@ function createSearchResults(translations) {
         searchResults.innerText = "No results found";
     }
     return searchResults;
+}
+
+function addWordToDictionary(event) {
+    if (translationTippy._isFetching) return;
+
+    const word = textElement.value;
+    const translation = event.target.innerText;
+    const sourceLang = source_language.value;
+    const targetLang = target_language.value;
+    translationTippy._isFetching = true;
+    fetch("/dictionary/add-word/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+        body: JSON.stringify({
+            word: word,
+            translation: translation,
+            source_language: sourceLang,
+            target_language: targetLang,
+        }),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        translationTippy.hide();
+    })
+    .catch((error) => {
+        const messageTippy = tippy(document.body, {
+            trigger: "manual",
+            allowHTML: true,
+            arrow: false,
+            content: () => {
+                let message = "An error occurred. Please reload the page and try again."; 
+                let element = document.createElement("div");
+                element.classList.add("add_word_error")
+                element.innerText = message;
+                return element; 
+            },
+        })
+        messageTippy.show();
+        setTimeout(() => messageTippy.hide(), 3000);
+    })
+    .finally(() => {
+        translationTippy._isFetching = false;
+    });
 }
 
 /**

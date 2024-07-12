@@ -321,6 +321,20 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     padding: 20px var(--mob-side-padding);
     display: flex;
 }
+.add_word_error {
+    position: absolute;
+    top: 0;
+    top: 50px;
+    left: 50%;
+    width: 300px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    transform: translateX(-50%);
+    z-index: 2000;
+    background-color: var(--color-2);
+    color: var(--color-3);
+}
 
 #search_bar {
     width: 100%;
