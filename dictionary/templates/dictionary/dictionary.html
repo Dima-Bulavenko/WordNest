@@ -16,6 +16,9 @@
                 <img src="{% static "img/search_icon.svg" %}" alt="search_icon">
             </div>
         </div>
+        {% for translation in dictionary.translations.all %}
+            <p>{{ translation.from_word.word }} -> {{ translation.to_word.word }}</p>
+        {% endfor %}
     </div>
 {% endblock content %}
 {% block js_block %}
