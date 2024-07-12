@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import CreateView, DetailView, TemplateView
@@ -97,3 +98,18 @@ class DictionaryView(DetailView):
             source_language__code=source,
             target_language__code=target,
         )
+
+
+class AddWordView(AJAXMixing, View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf-8"))
+        try: 
+            dictionary = Dictionary.objects.get(
+                user=request.user,
+                source_language__code=data["source_language"],
+                target_language__code=data["target_language"],
+            )
+            dictionary.add_translation(data["word"], data["translation"])
+            return HttpResponse()
+        except ObjectDoesNotExist:
+            return HttpResponseBadRequest()
