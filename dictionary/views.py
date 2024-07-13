@@ -10,7 +10,7 @@ from django.views.generic import CreateView, DetailView, TemplateView
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
-from dictionary.search_manager import TranslationAPI
+from dictionary.search_manager import translate
 
 
 class IndexView(TemplateView):
@@ -61,8 +61,11 @@ class AJAXMixing:
 class TranslationView(AJAXMixing, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
-        client = TranslationAPI(**data)
-        translation = client.translate()
+        word = data.get("body")
+        from_lang = data.get("from_language")
+        to_lang = data.get("to_language")
+        user = request.user
+        translation = translate(word, from_lang, to_lang, user)
         return JsonResponse(translation)
 
 
