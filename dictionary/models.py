@@ -102,6 +102,7 @@ class Translation(models.Model):
         Word, on_delete=models.CASCADE, related_name="target_word"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
     
     class Meta:
         constraints = [
