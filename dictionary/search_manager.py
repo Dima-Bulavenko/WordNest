@@ -153,29 +153,25 @@ class TextAPITranslation(BaseAzureAPITranslation):
         return templated_translations
 
 
-        Parameters:
-            data (dict): The data object containing the translation information.
+class Translator:
+    def __init__(self, strategies: list[TranslationStrategy]):
+        self._strategies = strategies
 
-        Returns:
-            bool: True if the 'translations' key is present and has a truthy value, False otherwise.
-        """
-        key = "translations"
-        return key in data and bool(data[key])
-    
-    def get_db_translation(self) -> QuerySet:
-        """
-        Looks up dictionary entries for the text in the database.
-
-        Send a request to the database to look up dictionary entries
-        for the text from the source language to the target language.
-        """
-        data = Translation.get_translations(self.body, self.from_language, self.to_language)
-        templated_data = self.get_templated_data(data)
-        
-        if self.has_translation(templated_data):
-            return templated_data
+    def translate(self, word: str, from_lang: str, to_lang: str, user: User) -> dict:
+        templated_data = {
+            "form_lang": from_lang,
+            "to_lang": to_lang,
+            "word": word,
+            "translations": [],
+        }
+        for strategy in self._strategies:
+            translations = strategy.translate(word, from_lang, to_lang, user)
+            if translations:
+                templated_data["translations"] = translations
+                self.add_translation_to_db(templated_data)
+                return templated_data
         return None
-    
+
     def add_translation_to_db(self, data: dict):
         """
         Adds the translation to the database.
