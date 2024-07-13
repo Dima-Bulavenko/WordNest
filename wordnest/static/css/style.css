@@ -359,7 +359,17 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 #search_results {
-    max-width: 70vw;
+    max-width: 75vw;
+    font-size: var(--xsmall-fs);
+}   
+
+.search_result {
+    padding: 5px 15px;
+}
+
+.user_translation {
+    background-color: var(--color-1);
+    color: var(--color-2);
 }
 
 #translate_word img {
@@ -367,11 +377,13 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     height: 25px;
 }
 
+.tippy-content {
+    padding: 0px;
+}
+
 .tippy-box {
-    border: 1px solid #ccc;
-    background-color: var(--color-1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+    border-radius: 0;
+}
 
 #translate_word:active {
     transform: scale(1.2);
