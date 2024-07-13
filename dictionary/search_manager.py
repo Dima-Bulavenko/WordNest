@@ -92,11 +92,11 @@ class DatabaseTranslation(TranslationStrategy):
         return templated_translations
 
 
-        return self.get_templated_data(data)
+class BaseAzureAPITranslation(TranslationStrategy):
+    def __init__(self):
+        self.__key = AzureKeyCredential(config("AZURE_TRANSLATOR_KEY"))
+        self.client = TextTranslationClient(credential=self.__key)
 
-    def lookup_dictionary_entries(self) -> DictionaryLookupItem:
-        """
-        Looks up dictionary entries for the text.
 
         Send a request to the client service to look up dictionary entries
         for the text from the source language to the target language.
