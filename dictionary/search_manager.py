@@ -200,25 +200,9 @@ class Translator:
             translations = strategy.translate(word, from_lang, to_lang, user)
             if translations:
                 templated_data["translations"] = translations
-                self.add_translation_to_db(templated_data)
-                return templated_data
-        return None
+                break
+        return templated_data
 
-    def add_translation_to_db(self, data: dict) -> None:
-        """
-        Add a translation to the database if it doesn't already exist or has 
-        translation_type equal to "dictionary_api".
-
-        Parameters:
-            data (dict): The data object containing the translation information.
-        """
-        source_code = data["form_lang"]
-        target_code = data["to_lang"]
-        word = data["word"]
-        translations = [trans for trans in data["translations"] 
-                        if trans["translation_type"] == "dictionary_api"]
-
-        Translation.create_translations(word, source_code, target_code, translations)
 
 
 def translate(word: str, from_lang: str, to_lang: str, user: User) -> dict:
