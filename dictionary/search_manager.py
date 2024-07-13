@@ -1,36 +1,68 @@
-from typing import Union
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
 
 from azure.ai.translation.text import TextTranslationClient
-from azure.ai.translation.text.models import DictionaryLookupItem, TranslatedTextItem
+from azure.ai.translation.text.models import DictionaryTranslation, TranslationText
 from azure.core.credentials import AzureKeyCredential
-from azure.core.exceptions import HttpResponseError
 from decouple import config
 from django.db.models import QuerySet
 
-from dictionary.models import Translation
+from dictionary.models import Translation, User
 
 
-class TranslationAPI:
-    def __init__(self, *, from_language: str, to_language: str, body: str):
-        self.__key = AzureKeyCredential(config("AZURE_TRANSLATOR_KEY"))
-        self.client = TextTranslationClient(credential=self.__key)
-        self.from_language = from_language
-        self.to_language = to_language
-        self.body = body
-
-    def translate(self) -> dict:
+class TranslationStrategy(ABC):
+    """
+    An abstract class for translation strategies.
+    """
+    @abstractmethod
+    def query_translation(self, word, from_lang, to_lang, user):
         """
-        Translates text by looking up dictionary entries and translating text.
+        An abstract method to get translations for the word from the source language to the target language.
+        """
+        pass
 
-        This method first attempts to translate the text by looking up dictionary entries.
-        If no dictionary entries are found, it falls back to translating the text.
+    @abstractmethod
+    def create_templated_translations(
+        self, word, from_lang, to_lang, translations, user
+    ):
+        """
+        An abstract method to create a list of templated translations.
+        """
+        pass
+
+    def translate(self, word: str, from_lang: str, to_lang: str, user: User) -> list[dict]:
+        """
+        Runs the query_translation() and create_templated_translations() methods to get translations for the word.
+
+        Args:
+            word (str): a word to translate
+            from_lang (str): the language code of the word
+            to_lang (str): the language code to translate the word to
+            user (User): the user requesting the translation
 
         Returns:
-            dict: The translated text as a dictionary.
+            list[dict]: a list of templated translations
         """
-        if db_translations := self.get_db_translation():
-            return db_translations
-        
+        translations = self.query_translation(word, from_lang, to_lang)
+        return self.create_templated_translations(
+            word, from_lang, to_lang, translations, user
+        )
+
+    def get_translation_template(self) -> dict:
+        """
+        Common template for translation data.
+        Returns:
+            dict: _description_
+        """
+        return {
+            "text": "",
+            "pos": "",
+            "prefix_word": "",
+            "user_translation": False,
+            "translation_type": "",
+        }
+
         if dictionary_translations := self.lookup_dictionary_entries():
             self.add_translation_to_db(dictionary_translations)
             return dictionary_translations
