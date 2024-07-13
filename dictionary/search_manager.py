@@ -98,40 +98,35 @@ class BaseAzureAPITranslation(TranslationStrategy):
         self.client = TextTranslationClient(credential=self.__key)
 
 
-        Send a request to the client service to look up dictionary entries
-        for the text from the source language to the target language.
+class DictionaryAPITranslation(BaseAzureAPITranslation):
+    def query_translation(
+        self, word, from_lang, to_lang
+    ) -> list[DictionaryTranslation]:
+        if len(word) > 100:
+            return []
 
-        Returns:
-            DictionaryLookupItem: The dictionary entries for the text as a DictionaryLookupItem.
-        """
-        try:
-            data = self.client.lookup_dictionary_entries(
-                body=[self.body],
-                from_language=self.from_language,
-                to_language=self.to_language,
-            )[0]
-        except HttpResponseError as ex:
-            if ex.error.code == 400050:  # text exceeds the maximum length of 100
-                return None
-            raise
+        translations = self.client.lookup_dictionary_entries(
+            body=[word],
+            from_language=from_lang,
+            to_language=to_lang,
+        )[0].translations
 
-        if self.has_translation(data):
-            templated_data = self.get_templated_data(data)
-            return templated_data
-        return None
+        return translations
 
-    def get_templated_data(
-        self, data: Union[DictionaryLookupItem, TranslatedTextItem, QuerySet]
-    ) -> dict:
-        """
-        Formats the translation data into a specific template.
+    def create_templated_translations(
+        self, word, from_lang, to_lang, translations, user
+    ) -> list:
+        templated_translations = []
 
-        Takes in a data object, which can be either a DictionaryLookupItem or a
-        TranslatedTextItem, and formats the translation data into a specific template.
+        for translation in translations:
+            template = self.get_translation_template()
+            template["text"] = translation.normalized_target
+            template["pos"] = translation.pos_tag
+            template["prefix_word"] = translation.prefix_word
+            template["translation_type"] = "dictionary_api"
+            templated_translations.append(template)
+        return templated_translations
 
-        Parameters:
-            data (Union[DictionaryLookupItem, TranslatedTextItem]): The data object containing
-            the translation information.
 
         Returns:
             dict: A dictionary containing the formatted translation data.
