@@ -128,50 +128,30 @@ class DictionaryAPITranslation(BaseAzureAPITranslation):
         return templated_translations
 
 
-        Returns:
-            dict: A dictionary containing the formatted translation data.
-        """
-        templated_data = {
-            "form_lang": self.from_language,
-            "to_lang": self.to_language,
-            "word": self.body,
-            "translations": [],
-        }
+class TextAPITranslation(BaseAzureAPITranslation):
+    def query_translation(self, word, from_lang, to_lang) -> list[TranslationText]:
+        if len(word) > 1500:
+            return []
 
-        if isinstance(data, QuerySet):
-            for translation in data:
-                translation_data = {
-                    "text": translation.to_word.word,
-                    "pos": "",
-                    "prefix_word": "",
-                }
-                templated_data["translations"].append(translation_data)
-            return templated_data
+        return self.client.translate(
+            body=[word],
+            from_language=from_lang,
+            to_language=[to_lang],
+        )[0].translations
 
-        for trans_num, translation in enumerate(data.translations, 1):
-            if trans_num > 3:
-                break
+    def create_templated_translations(
+        self, word, from_lang, to_lang, translations, user
+    ) -> list:
+        templated_translations = []
 
-            if isinstance(data, TranslatedTextItem):
-                text = translation.text
-                pos = ""
-                prefix_word = ""
-            else:
-                text = translation.normalized_target
-                pos = translation.pos_tag
-                prefix_word = translation.prefix_word
+        for translation in translations:
+            template = self.get_translation_template()
+            template["text"] = translation.text
+            template["translation_type"] = "text_api"
+            templated_translations.append(template)
 
-            translation_data = {
-                "text": text,
-                "pos": pos,
-                "prefix_word": prefix_word,
-            }
-            templated_data["translations"].append(translation_data)
-        return templated_data
+        return templated_translations
 
-    def has_translation(self, data: dict) -> bool:
-        """
-        Checks if the provided data contains any translations.
 
         Parameters:
             data (dict): The data object containing the translation information.
