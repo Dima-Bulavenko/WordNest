@@ -63,9 +63,6 @@ class TranslationStrategy(ABC):
             "translation_type": "",
         }
 
-        if dictionary_translations := self.lookup_dictionary_entries():
-            self.add_translation_to_db(dictionary_translations)
-            return dictionary_translations
 
 class DatabaseTranslation(TranslationStrategy):
     def query_translation(self, word, from_lang, to_lang) -> QuerySet:
@@ -185,3 +182,13 @@ class Translator:
         translations = data["translations"]
 
         Translation.create_translations(word, source_code, target_code, translations)
+
+
+def translate(word: str, from_lang: str, to_lang: str, user: User) -> dict:
+    strategies = [
+        DatabaseTranslation(),
+        DictionaryAPITranslation(),
+        TextAPITranslation(),
+    ]
+    translator = Translator(strategies)
+    return translator.translate(word, from_lang, to_lang, user)
