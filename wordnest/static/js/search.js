@@ -51,9 +51,13 @@ function createSearchResults(translations) {
         if (!translation.text) continue;
 
         let resultElement = document.createElement("div");
-        resultElement.className = "search_result";
+        resultElement.classList.add("search_result");
         resultElement.innerText = translation.text;
-        resultElement.addEventListener("click", addWordToDictionary);
+        if (translation.user_translation) {
+            resultElement.classList.add("user_translation");
+        } else {
+            resultElement.addEventListener("click", addWordToDictionary);
+        }
         searchResults.appendChild(resultElement);
     }
 
