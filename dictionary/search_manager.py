@@ -67,23 +67,30 @@ class TranslationStrategy(ABC):
             self.add_translation_to_db(dictionary_translations)
             return dictionary_translations
 
-        return self.translate_text()
+class DatabaseTranslation(TranslationStrategy):
+    def query_translation(self, word, from_lang, to_lang) -> QuerySet:
+        return Translation.get_translations(word, from_lang, to_lang)
 
-    def translate_text(self) -> dict:
-        """
-        Translates text using a client service.
+    def create_templated_translations(
+        self, word, from_lang, to_lang, translations, user
+    ) -> list:
+        user_dictionary = user.dictionaries.get(
+            source_language__code=from_lang, target_language__code=to_lang
+        )
+        dictionary_translations = user_dictionary.translations.filter(
+            from_word__word=word
+        )
 
-        Send a request to the client service to translate the text from 
-        the source language to the target language.
+        templated_translations = []
+        for translation in translations:
+            template = self.get_translation_template()
+            template["text"] = translation.to_word.word
+            template["translation_type"] = "database"
+            if translation in dictionary_translations:
+                template["user_translation"] = True
+            templated_translations.append(template)
+        return templated_translations
 
-        Returns:
-            dict: The translated text as a dictionary.
-        """
-        data = self.client.translate(
-            body=[self.body],
-            from_language=self.from_language,
-            to_language=[self.to_language],
-        )[0]
 
         return self.get_templated_data(data)
 
