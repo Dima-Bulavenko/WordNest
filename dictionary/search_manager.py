@@ -169,9 +169,10 @@ class Translator:
                 return templated_data
         return None
 
-    def add_translation_to_db(self, data: dict):
+    def add_translation_to_db(self, data: dict) -> None:
         """
-        Adds the translation to the database.
+        Add a translation to the database if it doesn't already exist or has 
+        translation_type equal to "dictionary_api".
 
         Parameters:
             data (dict): The data object containing the translation information.
@@ -179,7 +180,8 @@ class Translator:
         source_code = data["form_lang"]
         target_code = data["to_lang"]
         word = data["word"]
-        translations = data["translations"]
+        translations = [trans for trans in data["translations"] 
+                        if trans["translation_type"] == "dictionary_api"]
 
         Translation.create_translations(word, source_code, target_code, translations)
 
