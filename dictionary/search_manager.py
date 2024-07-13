@@ -6,9 +6,10 @@ from azure.ai.translation.text import TextTranslationClient
 from azure.ai.translation.text.models import DictionaryTranslation, TranslationText
 from azure.core.credentials import AzureKeyCredential
 from decouple import config
+from django.db import transaction
 from django.db.models import QuerySet
 
-from dictionary.models import Translation, User
+from dictionary.models import Language, Translation, User, Word
 
 
 class TranslationStrategy(ABC):
@@ -122,7 +123,41 @@ class DictionaryAPITranslation(BaseAzureAPITranslation):
             template["prefix_word"] = translation.prefix_word
             template["translation_type"] = "dictionary_api"
             templated_translations.append(template)
+        if templated_translations:
+            self.__create_approved_translations(word, from_lang, to_lang, templated_translations)
         return templated_translations
+    
+    @staticmethod
+    def __create_approved_translations(
+            word: str,
+            source_lang_code: str,
+            target_lang_code: str,
+            translations: list
+        ) -> None:
+        """
+        Create approved translations.
+
+        The translations is approved if it was translated by dictionary translation class.
+
+        Args:
+            word (str): The word to translate.
+            source_lang_code (str): The language code of the language the word is in.
+            target_lang_code (str): The language code of the language to translate the word to.
+            translations (list): A list of dictionaries, each containing a translation of the word. 
+                                  Each dictionary must have a "text" key associated with the translated word.
+        """
+        with transaction.atomic():
+            source_lang = Language.objects.get(code=source_lang_code)
+            target_lang = Language.objects.get(code=target_lang_code)
+            from_word = Word.objects.get_or_create(word=word.lower(), language=source_lang)[0]
+            for translation in translations:
+                to_word = Word.objects.get_or_create(word=translation["text"], language=target_lang)[0]
+                Translation.objects.get_or_create(
+                    from_word=from_word, 
+                    to_word=to_word, 
+                    defaults={"is_approved": True}
+                )
+
 
 
 class TextAPITranslation(BaseAzureAPITranslation):
