@@ -67,7 +67,7 @@ class TranslationStrategy(ABC):
 
 class DatabaseTranslation(TranslationStrategy):
     def query_translation(self, word, from_lang, to_lang) -> QuerySet:
-        return Translation.get_translations(word, from_lang, to_lang)
+        return Translation.get_approved_translations(word, from_lang, to_lang)
 
     def create_templated_translations(
         self, word, from_lang, to_lang, translations, user

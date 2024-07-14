@@ -148,11 +148,12 @@ class Translation(models.Model):
         super().save(*args, **kwargs)
         
     @classmethod
-    def get_translations(cls, word, source_language, target_language):
+    def get_approved_translations(cls, word, source_language, target_language):
         return cls.objects.filter(
             from_word__word=word,
             from_word__language__code=source_language,
-            to_word__language__code=target_language
+            to_word__language__code=target_language,
+            is_approved=True
         )
 
 
