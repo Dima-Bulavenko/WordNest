@@ -206,3 +206,15 @@ class Dictionary(models.Model):
             to_word=to_word
         )[0]
         self.translations.add(translation)
+
+    def get_translations(self, word: str) -> QuerySet:
+        """
+        Return translations of a word in the user's dictionary.
+
+        Args:
+            word (str): word to translate
+
+        Returns:
+            QuerySet: QuerySet of translations for a word in particular dictionary.
+        """
+        return self.translations.filter(from_word__word=word)
