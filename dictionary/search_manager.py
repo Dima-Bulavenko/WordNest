@@ -72,13 +72,8 @@ class DatabaseTranslation(TranslationStrategy):
     def create_templated_translations(
         self, word, from_lang, to_lang, translations, user
     ) -> list:
-        user_dictionary = user.dictionaries.get(
-            source_language__code=from_lang, target_language__code=to_lang
-        )
-        dictionary_translations = user_dictionary.translations.filter(
-            from_word__word=word
-        )
-
+        dictionary_translations = user.get_word_translations(word, from_lang, to_lang)
+        translations = list(translations) + [trans for trans in dictionary_translations if trans not in translations]
         templated_translations = []
         for translation in translations:
             template = self.get_translation_template()

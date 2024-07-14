@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models, transaction
-from django.db.models import F, Q
+from django.db.models import F, Q, QuerySet
 from django.forms import ValidationError
 
 
@@ -85,6 +85,23 @@ class User(AbstractBaseUser, PermissionsMixin):
         with transaction.atomic():
             dictionary.add_translation(word, translation)
 
+    def get_word_translations(self, word, source_language, target_language):
+        """
+        Return translations of a word in user's dictionary.
+
+        Args:
+            word (str): word to translate
+            source_language (str): source language code
+            target_language (str): target language code
+
+        Returns:
+            list: list of translations
+        """
+        dictionary = self.dictionaries.get(
+            source_language__code=source_language,
+            target_language__code=target_language,
+        )
+        return dictionary.get_translations(word)
 
 class Word(models.Model):
     word = models.TextField()
