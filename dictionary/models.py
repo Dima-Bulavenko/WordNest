@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models, transaction
-from django.db.models import F, Q
+from django.db.models import F, Q, QuerySet
 from django.forms import ValidationError
 
 
@@ -58,6 +58,50 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Each superuser is a staff member."
         return self.is_superuser
 
+    def add_word_to_dictionary(
+            self, 
+            source_language: str, 
+            target_language: str,
+            word: str, 
+            translation: str
+    ) -> None:
+        """
+        Add a word to the user's dictionary.
+
+        Args:
+            source_language (str): source language code
+            target_language (str): target language code
+            word (str): word to translate
+            translation (str): translation of the word
+
+        Returns:
+            None
+        """
+        dictionary = self.dictionaries.get(
+                user=self,
+                source_language__code=source_language,
+                target_language__code=target_language,
+            )
+        with transaction.atomic():
+            dictionary.add_translation(word, translation)
+
+    def get_word_translations(self, word, source_language, target_language):
+        """
+        Return translations of a word in user's dictionary.
+
+        Args:
+            word (str): word to translate
+            source_language (str): source language code
+            target_language (str): target language code
+
+        Returns:
+            list: list of translations
+        """
+        dictionary = self.dictionaries.get(
+            source_language__code=source_language,
+            target_language__code=target_language,
+        )
+        return dictionary.get_translations(word)
 
 class Word(models.Model):
     word = models.TextField()
@@ -102,6 +146,7 @@ class Translation(models.Model):
         Word, on_delete=models.CASCADE, related_name="target_word"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
     
     class Meta:
         constraints = [
@@ -120,43 +165,13 @@ class Translation(models.Model):
         super().save(*args, **kwargs)
         
     @classmethod
-    def get_translations(cls, word, source_language, target_language):
+    def get_approved_translations(cls, word, source_language, target_language):
         return cls.objects.filter(
             from_word__word=word,
             from_word__language__code=source_language,
-            to_word__language__code=target_language
+            to_word__language__code=target_language,
+            is_approved=True
         )
-    
-    @classmethod
-    def create_translations(
-            cls,
-            word: str,
-            source_lang_code: str,
-            target_lang_code: str,
-            translations: list
-        ) -> None:
-        """
-        Creates translations for a given word from one language to another.
-
-        This method retrieves or creates Word instances for the given word and its translations, 
-        and associates them with the appropriate Language instances. 
-        It also creates Translation instances to represent the translations from the 
-        given word to each of its translations.
-
-        Args:
-            word (str): The word to translate.
-            source_lang_code (str): The language code of the language the word is in.
-            target_lang_code (str): The language code of the language to translate the word to.
-            translations (list): A list of dictionaries, each containing a translation of the word. 
-                                  Each dictionary must have a "text" key associated with the translated word.
-        """
-        with transaction.atomic():
-            source_lang = Language.objects.get(code=source_lang_code)
-            target_lang = Language.objects.get(code=target_lang_code)
-            from_word = Word.objects.get_or_create(word=word.lower(), language=source_lang)[0]
-            for translation in translations:
-                to_word = Word.objects.get_or_create(word=translation["text"].lower(), language=target_lang)[0]
-                cls.objects.get_or_create(from_word=from_word, to_word=to_word)
 
 
 class Dictionary(models.Model):
@@ -184,3 +199,40 @@ class Dictionary(models.Model):
 
     def __str__(self):
         return f"{self.user}'s dictionary"
+
+    def add_translation(self, from_word: str, to_word: str) -> None:
+        """
+        Add a translation to the user's dictionary.
+
+        Args:
+            from_word (str): word to translate
+            to_word (str): translation of the word
+
+        Returns:
+            bool: True if the translation was added, False otherwise.
+        """
+        from_word = Word.objects.get_or_create(
+            word=from_word, 
+            language=self.source_language
+        )[0]
+        to_word = Word.objects.get_or_create(
+            word=to_word, 
+            language=self.target_language
+        )[0]
+        translation = Translation.objects.get_or_create(
+            from_word=from_word, 
+            to_word=to_word
+        )[0]
+        self.translations.add(translation)
+
+    def get_translations(self, word: str) -> QuerySet:
+        """
+        Return translations of a word in the user's dictionary.
+
+        Args:
+            word (str): word to translate
+
+        Returns:
+            QuerySet: QuerySet of translations for a word in particular dictionary.
+        """
+        return self.translations.filter(from_word__word=word)

@@ -1,15 +1,17 @@
 import json
 from pathlib import Path
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import CreateView, DetailView, TemplateView
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
-from dictionary.search_manager import TranslationAPI
+from dictionary.search_manager import translate
+from wordnest.shortcuts import normalize_string
 
 
 class IndexView(TemplateView):
@@ -39,23 +41,33 @@ class IndexView(TemplateView):
         return self.request.user.dictionaries.all()
 
 
-class TranslationView(View):
-    def post(self, request, *args, **kwargs):
-        if self.is_ajax():
-            data = json.loads(request.body.decode("utf-8"))
-            client = TranslationAPI(**data)
-            translation = client.translate()
-            return JsonResponse(translation)
-        raise Http404("Page not fount")
+class AJAXMixing:
+    def setup(self, request, *args, **kwargs):
+        if not self.is_ajax(request):
+            raise Http404("Page not found")
 
-    def is_ajax(self) -> bool:
+        super().setup(request, *args, **kwargs)
+
+    @staticmethod
+    def is_ajax(request) -> bool:
         """
         Checks if the request was made via AJAX.
 
         Returns:
             bool: True if the request was made via AJAX, False otherwise.
         """
-        return self.request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        return request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+
+class TranslationView(AJAXMixing, View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf-8"))
+        word = normalize_string(data.get("body"))
+        from_lang = normalize_string(data.get("from_language"))
+        to_lang = normalize_string(data.get("to_language"))
+        user = request.user
+        translation = translate(word, from_lang, to_lang, user)
+        return JsonResponse(translation)
 
 
 class CreateDictionaryView(CreateView):
@@ -90,3 +102,18 @@ class DictionaryView(DetailView):
             source_language__code=source,
             target_language__code=target,
         )
+
+
+class AddWordView(AJAXMixing, View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf-8"))
+        try: 
+            request.user.add_word_to_dictionary(
+                data["source_language"], 
+                data["target_language"], 
+                data["word"], 
+                data["translation"]
+            )
+            return HttpResponse()
+        except ObjectDoesNotExist:
+            return HttpResponseBadRequest()
