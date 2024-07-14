@@ -58,6 +58,33 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Each superuser is a staff member."
         return self.is_superuser
 
+    def add_word_to_dictionary(
+            self, 
+            source_language: str, 
+            target_language: str,
+            word: str, 
+            translation: str
+    ) -> None:
+        """
+        Add a word to the user's dictionary.
+
+        Args:
+            source_language (str): source language code
+            target_language (str): target language code
+            word (str): word to translate
+            translation (str): translation of the word
+
+        Returns:
+            None
+        """
+        dictionary = self.dictionaries.get(
+                user=self,
+                source_language__code=source_language,
+                target_language__code=target_language,
+            )
+        with transaction.atomic():
+            dictionary.add_translation(word, translation)
+
 
 class Word(models.Model):
     word = models.TextField()
