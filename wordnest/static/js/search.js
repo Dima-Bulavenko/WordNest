@@ -64,8 +64,74 @@ function createSearchResults(translations) {
     if (!searchResults.children.length) {
         searchResults.innerText = "No results found";
     }
+    const addTranslationButton = createAddTranslationButton();
+    addTranslationButton.addEventListener("click", (e) => {
+        const addTranslationContainer = createAddTranslationContainer();
+        searchResults.appendChild(addTranslationContainer);
+        e.target.remove();
+    });
+    searchResults.appendChild(addTranslationButton);
     return searchResults;
+};
+
+function createAddTranslationButton() {
+    const addTranslation = document.createElement("div");
+    addTranslation.id = "add_translation_btn";
+    addTranslation.innerText = "Your translation";
+    return addTranslation;
 }
+
+function createUserTranslationInput() {
+    const search_results = document.getElementById("search_results");
+    const userTranslationInput = document.createElement("input");
+    userTranslationInput.type = "text";
+    userTranslationInput.placeholder = "Enter translation";
+    userTranslationInput.id = "user_translation_input";  
+    return userTranslationInput;  
+}
+
+function createSubmitUserTranslationButton() {
+    const submitUserTranslation = document.createElement("div")
+    submitUserTranslation.id = "submit_user_translation";
+    submitUserTranslation.innerText = "Add translation";
+    return submitUserTranslation;
+};
+
+function createAddTranslationContainer() {
+    const addTranslationContainer = document.createElement("div");
+    addTranslationContainer.classList.add("add_translation_container");
+
+    const userTranslationInput = createUserTranslationInput();
+    const submitUserTranslation = createSubmitUserTranslationButton();
+    addTranslationContainer.appendChild(userTranslationInput);
+    addTranslationContainer.appendChild(submitUserTranslation);
+
+    userTranslationInput.addEventListener("keydown", (event) => {
+        const value = event.target.value.trim();
+        if (event.key === "Enter" && value) {
+            submitUserTranslation.click();
+        }
+    });
+    userTranslationInput.addEventListener("input", (event) => {
+        const value = event.target.value.trim();
+        if (value) {
+            submitUserTranslation.style.pointerEvents = "auto";
+            submitUserTranslation.style.opacity = 1;
+        } else {
+            submitUserTranslation.style.pointerEvents = "none";
+            submitUserTranslation.style.opacity = 0.5;
+        }
+    });
+    submitUserTranslation.addEventListener("click", (event) => {
+        const value = userTranslationInput.value.trim();
+        if (value) {
+            addWordToDictionary({ target: { innerText: value } });
+            event.target.style.pointerEvents = "none";
+        }
+    });
+
+    return addTranslationContainer
+};
 
 function addWordToDictionary(event) {
     if (translationTippy._isFetching) return;
