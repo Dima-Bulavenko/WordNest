@@ -108,12 +108,12 @@ class AddWordView(AJAXMixing, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
         try: 
-            dictionary = Dictionary.objects.get(
-                user=request.user,
-                source_language__code=data["source_language"],
-                target_language__code=data["target_language"],
+            request.user.add_word_to_dictionary(
+                data["source_language"], 
+                data["target_language"], 
+                data["word"], 
+                data["translation"]
             )
-            dictionary.add_translation(data["word"], data["translation"])
             return HttpResponse()
         except ObjectDoesNotExist:
             return HttpResponseBadRequest()
