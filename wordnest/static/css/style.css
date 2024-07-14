@@ -365,11 +365,50 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 
 .search_result {
     padding: 5px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-1);
 }
 
 .user_translation {
-    background-color: var(--color-1);
+    background-color: var(--color-1); 
     color: var(--color-2);
+    border-bottom: 1px solid var(--color-2);
+}
+
+#add_translation_btn {
+    color: var(--color-4);
+    text-align: center;
+    text-decoration: underline;
+    padding: 10px;
+    transition: all 0.3s;
+}
+
+#add_translation_btn:hover {
+    cursor: pointer;
+    color: var(--color-3);
+}
+
+.add_translation_container {
+    padding: 15px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#user_translation_input {
+    padding: 5px;
+    width: 200px;
+}
+
+#submit_user_translation {
+    background-color: var(--color-1);
+    padding: 5px 10px;
+    border-radius: 5px; 
+    cursor: pointer;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: all 0.3s;
 }
 
 #translate_word img {
