@@ -10,15 +10,19 @@
             <div id="search_bar">
                 <input type="hidden" name="source_language" value="{{ dictionary.source_language.code }}">
                 <input type="hidden" name="target_language" value="{{ dictionary.target_language.code }}">
-                <input type="text" placeholder="Search" name="word" id="word">
+                <input type="text" placeholder="Search" name="word" id="word"
+                    hx-get="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}"
+                    hx-trigger="input changed delay:500ms, load" 
+                    hx-target="#dictionary_words_container"
+                    hx-swap="innerHTML"
+                >
             </div>
             <div id="translate_word">
                 <img src="{% static "img/search_icon.svg" %}" alt="search_icon">
             </div>
         </div>
-        {% for translation in dictionary.translations.all %}
-            <p>{{ translation.from_word.word }} -> {{ translation.to_word.word }}</p>
-        {% endfor %}
+        <div id="dictionary_words_container" 
+        ></div>
     </div>
 {% endblock content %}
 {% block js_block %}
