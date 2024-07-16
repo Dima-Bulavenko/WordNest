@@ -12,7 +12,7 @@ from django.views.generic import CreateView, ListView, TemplateView
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
 from dictionary.search_manager import translate
-from wordnest.shortcuts import normalize_string
+from wordnest.shortcuts import group_translations_by_from_word, normalize_string
 
 
 class IndexView(TemplateView):
@@ -119,7 +119,8 @@ class DictionaryView(ListView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data["dictionary"] = self.dictionary
-        context_data["query"] = self.request.GET.get("word", "")
+        context_data["query"] = self.request.GET.get("word", "")    
+        context_data[self.context_object_name] = group_translations_by_from_word(context_data[self.context_object_name])
         return context_data
     
     def get_object(self):
