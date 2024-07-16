@@ -3,10 +3,11 @@ from pathlib import Path
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import CreateView, DetailView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
@@ -88,11 +89,39 @@ class CreateDictionaryView(CreateView):
             return render(self.request, self.template_name, {"form": form})
 
 
-class DictionaryView(DetailView):
-    model = Dictionary
+class DictionaryView(ListView):
+    paginate_by = 25
+    paginate_orphans = 10
     template_name = "dictionary/dictionary.html"
-    context_object_name = "dictionary"
+    context_object_name = "translations"
 
+    def get_queryset(self):
+        self.dictionary = self.get_object()
+        search = self.request.GET.get("word")
+        if search:
+            search = normalize_string(search)
+            queryset = self.dictionary.translations.filter(
+                Q(from_word__word__startswith=search) |
+                Q(to_word__word__startswith=search)
+            )
+        else:
+            queryset = self.dictionary.translations.all()
+        return group_translations_by_from_word(queryset)
+
+    def get_template_names(self):
+        names = []
+        if self.request.htmx:
+            names.append("dictionary/dictionary_word_list.html")
+        else:
+            names.append(self.template_name)
+        return names
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data["dictionary"] = self.dictionary
+        context_data["query"] = self.request.GET.get("word", "")
+        return context_data
+    
     def get_object(self):
         source = self.kwargs.get("source")
         target = self.kwargs.get("target")
