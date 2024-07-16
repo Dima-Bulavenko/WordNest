@@ -445,6 +445,27 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     margin-bottom: 30px;
 }
 
+.dictionary_word {
+    padding: 10px 10px 10px 20px;
+    border-bottom: 1px solid var(--color-4);
+}
+
+.dictionary_word:last-child {
+    border-bottom: none;
+}
+
+.from_word {
+    font-weight: var(--bold-fw);
+    padding-bottom: 7px;
+}
+
+.to_words {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 7px;
+    row-gap: 2px;
+}
+
 /* Media query: Tablet screen size */
 @media screen and (min-width: 768px) {
     /* Header */
