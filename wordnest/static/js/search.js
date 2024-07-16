@@ -160,6 +160,8 @@ function addWordToDictionary(event) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         translationTippy.hide();
+        textElement.value = "";
+        htmx.trigger(textElement, "input");
     })
     .catch((error) => {
         const messageTippy = tippy(document.body, {
