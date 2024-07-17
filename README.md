@@ -159,6 +159,7 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [js-cookie](https://github.com/js-cookie/js-cookie/) - JavaScript API for handling cookies
 -   [Tippy.js](https://atomiks.github.io/tippyjs/) is the complete tooltip, popover, dropdown, and menu solution for the web
 [Back to the top](#table-of-contents)
+- [django-htmx] - make using htmx in Django easier.
 
 # Deployment
 
@@ -380,11 +381,13 @@ The WordNest project was deployed on a Heroku hosting server. The following step
 
 ## Design Template
 
-[Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
+* [Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
 
 [Back to the top](#table-of-contents)
 
 ## Code
+
+* [Implementing infinite scroll in Django with htmx](https://medium.com/@franciscovcbm/infinite-scroll-with-django-and-htmx-27f61cfaf911)
 
 [Back to the top](#table-of-contents)
 
