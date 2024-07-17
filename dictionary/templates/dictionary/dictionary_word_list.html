@@ -1,0 +1,22 @@
+{% if translations %}
+    {% for from_word, to_words in translations %}
+        {% if is_paginated and forloop.last and page_obj.has_next %}
+            <div hx-trigger="revealed"
+                 hx-get="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}"
+                 hx-swap="beforeend"
+                 hx-vals='{"page": "{{ page_obj.next_page_number }}", "word": {% if query %} "{{ query }}" {% else %} "" {% endif %} }'
+                 hx-target="#dictionary_words_container"
+                 hx-sync="#word:abort"
+                 class="dictionary_word">
+            {% else %}
+                <div class="dictionary_word">
+                {% endif %}
+                <div class="from_word">{{ from_word.word }}</div>
+                <div class="to_words">
+                    {% for to_word in to_words %}<div class="to_word">{{ to_word.word }};</div>{% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No translations found.</p>
+    {% endif %}
