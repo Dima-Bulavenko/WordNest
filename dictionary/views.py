@@ -120,7 +120,6 @@ class DictionaryView(ListView):
         context_data = super().get_context_data(**kwargs)
         context_data["dictionary"] = self.dictionary
         context_data["query"] = self.request.GET.get("word", "")    
-        context_data[self.context_object_name] = group_translations_by_from_word(context_data[self.context_object_name])
         return context_data
     
     def get_object(self):
