@@ -389,6 +389,8 @@ The WordNest project was deployed on a Heroku hosting server. The following step
 
 * [Implementing infinite scroll in Django with htmx](https://medium.com/@franciscovcbm/infinite-scroll-with-django-and-htmx-27f61cfaf911)
 
+* [Dynamic messages with HTMX and Alpine.js](https://danjacob.net/posts/htmx_messages/)
+
 [Back to the top](#table-of-contents)
 
 ## Acknowledgements
