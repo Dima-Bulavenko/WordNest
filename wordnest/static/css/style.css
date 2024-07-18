@@ -69,6 +69,65 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     border: 3px solid var(--color-1);
 }
 
+/* Messages */
+#messages {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    padding: 1.5rem;
+}
+
+.message {
+    min-width: 270px;
+    padding-left: 1rem; 
+    padding-right: 1rem; 
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: var(--xsmall-fs);
+    font-weight: bold;
+}
+
+.message > svg {
+    width: 1.5rem;
+    height: 1.5rem; 
+    margin-right: 0.5rem; 
+    color: white;
+}
+.message_info {
+    background-color: #4299e1;
+}
+
+.message_success {
+    background-color: #48bb78;
+}
+
+.message_warning {
+    background-color: #ecc94b;
+}
+
+.message_error {
+    background-color: #f56565;
+}
+
+.transition-opacity {
+    transition: opacity 500ms ease-in-out;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.opacity-100 {
+    opacity: 1;
+}
+
 /* Mobile */
 
 /* Header */
