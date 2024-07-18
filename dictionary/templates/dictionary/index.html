@@ -16,7 +16,7 @@
                         <div class="dictionary_name">{{ dictionary.source_language.name }} - {{ dictionary.target_language.name }}</div>
                         <div class="word_amount">{{ dictionary.translations.count }} words</div>
                     </a>
-                    <div class="delete_dictionary"
+                    <div class="delete_dictionary delete_action"
                          hx-delete="{% url 'delete_dictionary' dictionary.pk %}"
                          hx-target="closest .dictionary"
                          hx-swap="outerHTML"
