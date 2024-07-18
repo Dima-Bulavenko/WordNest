@@ -63,6 +63,7 @@ MIDDLEWARE = [
     'livereload.middleware.LiveReloadScript',
     'allauth.account.middleware.AccountMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
+    'dictionary.middleware.HtmxMessagesMiddleware',
 ]
 
 ROOT_URLCONF = 'wordnest.urls'

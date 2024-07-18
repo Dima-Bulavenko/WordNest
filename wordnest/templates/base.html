@@ -8,6 +8,15 @@
               content="Discover WordNest, your go-to online dictionary for translations, multiple dictionaries, word sets, adding sentences for words, audio pronunciation, and much more. Explore the power of words today!">
         <meta name="keywords"
               content="WordNest, online dictionary, translations, multiple dictionaries, word sets, sentences for words, audio pronunciation, language learning">
+              <meta name="htmx-config" content='{
+                "responseHandling": [
+                    {"code":"204", "swap": false},   
+                    {"code":"[23]..", "swap": true}, 
+                    {"code":"422", "swap": true}, 
+                    {"code":"404", "swap": true, "select": "#messages", "swapOverride": "none"},
+                    {"code":"[45]..", "swap": false, "error": true}
+                ]
+            }'>
         <title>
             {% block title %}
                 Default title
@@ -20,8 +29,10 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
               rel="stylesheet" />
         <script src="{% static 'js/htmx.min.js' %}" defer></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
-    <body class="inter-font">
+    <body class="inter-font" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% include "messages.html" %}
         <header id="header">
             <a id="logo-image-text" href="{% url 'home' %}">
                 {% include "svg_templates/logo.svg" %}

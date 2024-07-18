@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages import add_message
+from django.contrib.messages import constants as messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
@@ -146,3 +149,15 @@ class AddWordView(AJAXMixing, View):
             return HttpResponse()
         except ObjectDoesNotExist:
             return HttpResponseBadRequest()
+
+
+class DeleteDictionaryView(LoginRequiredMixin, View):
+    def delete(self, request, *args, **kwargs):
+        try:
+            dictionary = get_object_or_404(request.user.dictionaries, pk=kwargs["pk"])
+            dictionary.delete()
+            add_message(request, messages.SUCCESS, "Dictionary deleted.")
+            return HttpResponse()
+        except Http404:
+            add_message(request, messages.ERROR, "Dictionary deletion failed.")
+            raise
