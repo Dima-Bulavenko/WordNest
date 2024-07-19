@@ -16,10 +16,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.defaults import page_not_found
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    re_path(r"^accounts/email/$", page_not_found, {'exception': Exception('Not Found')}, name="account_email"),
     path('accounts/', include('allauth.urls')),
     path("", include("dictionary.urls")),
 ]
