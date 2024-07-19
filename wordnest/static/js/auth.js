@@ -21,4 +21,6 @@ window.onload = function() {
     addClickListenersToInfoIcons();
 };
 
-module.exports = { addClickListenersToInfoIcons}
+if (typeof module !== 'undefined') {
+    module.exports = { addClickListenersToInfoIcons}
+}

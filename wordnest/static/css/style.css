@@ -201,11 +201,14 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .authentication-button {
+    border-radius: 10px;
+}
+
+.authentication-button > a {
     font-size: var(--small-fs);
     font-weight: var(--bold-fw);
     text-align: center;
     padding: 20px 35px;
-    border-radius: 10px;
 }
 
 .dark-bg {
@@ -283,7 +286,6 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .logout_btn {
-    padding: 15px 30px;
     transform: translateY(50%);
 }
 
@@ -347,16 +349,28 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     gap: 30px;
 }
 
+/* Style for social account links */
+
+.auth_social_container {
+    align-self: center;
+    transform: translateY(-20px);
+    font-size: var(--small-fs);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
 .social_account_container {
     display: flex;
-    justify-content: space-around;
-    width: 40%;
+    justify-content: space-between;
+    width: 100px;
 }
 
 .social_account_container img {
     transition: filter 0.5s;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
 }
 
 .social_account_container img, .submit_bt {
@@ -823,8 +837,11 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     }
 
     .authentication-button {
-        padding: 10px 20px;
         transition: all 0.5s;
+    }
+
+    .authentication-button > a {
+        padding: 10px 20px;
     }
 
     .authentication-button.bright-bg:hover {

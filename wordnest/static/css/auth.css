@@ -156,31 +156,3 @@ label[for="id_remember"] {
 .errorlist.nonfield {
     transform: translateY(-30%);
 }
-
-/* Style for social account links */
-
-.auth_social_container {
-    align-self: center;
-    transform: translateY(-20px);
-    font-size: var(--small-fs);
-}
-
-.social_account_container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.social_account_container img {
-    transition: filter 0.5s;
-    width: 35px;
-    height: 35px;
-}
-
-.social_account_container img, .submit_bt {
-    transition: filter 0.5s;
-}
-
-.social_account_container img:hover, .submit_bt:hover {
-    filter: brightness(50%);
-}

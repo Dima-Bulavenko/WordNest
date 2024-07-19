@@ -242,4 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
     runButton.addEventListener("click", () => translationTippy.show());
 });
 
-module.exports = { showRunButton, createSearchResults };
+if (typeof module !== 'undefined') {
+    module.exports = { showRunButton, createSearchResults };
+}
