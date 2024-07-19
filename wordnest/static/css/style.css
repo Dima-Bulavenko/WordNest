@@ -201,11 +201,14 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .authentication-button {
+    border-radius: 10px;
+}
+
+.authentication-button > a {
     font-size: var(--small-fs);
     font-weight: var(--bold-fw);
     text-align: center;
     padding: 20px 35px;
-    border-radius: 10px;
 }
 
 .dark-bg {
@@ -283,7 +286,6 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .logout_btn {
-    padding: 15px 30px;
     transform: translateY(50%);
 }
 
@@ -835,8 +837,11 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     }
 
     .authentication-button {
-        padding: 10px 20px;
         transition: all 0.5s;
+    }
+
+    .authentication-button > a {
+        padding: 10px 20px;
     }
 
     .authentication-button.bright-bg:hover {
