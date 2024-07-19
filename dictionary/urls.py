@@ -10,4 +10,5 @@ urlpatterns = [
     path("dictionary/delete/<int:pk>", views.DeleteDictionaryView.as_view(), name="delete_dictionary"),
     path("dictionary/add-word/", views.AddWordView.as_view(), name="add_word_to_dictionary"),
     path("profile/", views.ProfileView.as_view(), name="profile"),
+    path("account/delete/", views.DeleteAccountView.as_view(), name="delete_account"),
 ]

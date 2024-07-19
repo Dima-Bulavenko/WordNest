@@ -179,3 +179,18 @@ class ProfileView(LoginRequiredMixin, DetailView):
         
         return context_data
 
+
+class DeleteAccountView(LoginRequiredMixin, RedirectView):
+    pattern_name = "home"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            request.user.delete()
+            response = super().get(request, *args, **kwargs)
+            add_message(request, messages.SUCCESS, "Account deleted.")
+        except Exception:
+            add_message(request, messages.ERROR, "Account deletion failed.")            
+            raise
+        else:
+            return response
+
