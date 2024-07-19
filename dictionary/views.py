@@ -141,10 +141,10 @@ class AddWordView(AJAXMixing, View):
         data = json.loads(request.body.decode("utf-8"))
         try: 
             request.user.add_word_to_dictionary(
-                data["source_language"], 
-                data["target_language"], 
-                data["word"], 
-                data["translation"]
+                normalize_string(data["source_language"]), 
+                normalize_string(data["target_language"]), 
+                normalize_string(data["word"]), 
+                normalize_string((data["translation"]))
             )
             return HttpResponse()
         except ObjectDoesNotExist:
