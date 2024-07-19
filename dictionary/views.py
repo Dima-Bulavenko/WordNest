@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView, DetailView, RedirectView
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
@@ -161,3 +161,36 @@ class DeleteDictionaryView(LoginRequiredMixin, View):
         except Http404:
             add_message(request, messages.ERROR, "Dictionary deletion failed.")
             raise
+    
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    context_object_name = "user"
+    template_name = "account/profile.html"
+
+    def get_object(self):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        user = context_data[self.context_object_name]
+        total_translations = user.get_total_translations()
+        context_data["dictionaries"] = user.dictionaries.all()
+        context_data["total_translations"] = total_translations
+        
+        return context_data
+
+
+class DeleteAccountView(LoginRequiredMixin, RedirectView):
+    pattern_name = "home"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            request.user.delete()
+            response = super().get(request, *args, **kwargs)
+            add_message(request, messages.SUCCESS, "Account deleted.")
+        except Exception:
+            add_message(request, messages.ERROR, "Account deletion failed.")            
+            raise
+        else:
+            return response
+

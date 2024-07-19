@@ -103,6 +103,23 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
         return dictionary.get_translations(word)
 
+    def get_total_translations(self):
+        """
+        Return the total number of translations in all user's dictionaries.
+
+        Returns:
+            int: total number of user's translations
+        """
+        dictionaries = self.dictionaries.annotate(
+            translations_count=models.Count('translations')
+        )
+        total_translations = dictionaries.aggregate(
+            total=models.Sum('translations_count')
+        )['total']
+
+        return total_translations if total_translations else 0
+        
+        
 class Word(models.Model):
     word = models.TextField()
     language = models.ForeignKey("Language", on_delete=models.CASCADE)

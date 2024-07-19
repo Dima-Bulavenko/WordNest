@@ -10,22 +10,7 @@
 {% block content %}
     {% if dictionaries %}
         <div class="dictionaries_container">
-            {% for dictionary in dictionaries %}
-                <div class="dictionary">
-                    <a href="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}">
-                        <div class="dictionary_name">{{ dictionary.source_language.name }} - {{ dictionary.target_language.name }}</div>
-                        <div class="word_amount">{{ dictionary.translations.count }} words</div>
-                    </a>
-                    <div class="delete_dictionary delete_action"
-                         hx-delete="{% url 'delete_dictionary' dictionary.pk %}"
-                         hx-target="closest .dictionary"
-                         hx-swap="outerHTML"
-                         hx-confirm="After deleting, you can't recover the dictionary."
-                    >
-                        <img src="{% static "img/trash_icon.svg" %}" alt="trash icon">
-                    </div>
-                </div>
-            {% endfor %}
+            {% include "dictionary/dictionary_list.html" %}
         </div>
         <a href="{% url 'create_dictionary' %}">
             <div class="submit_bt">Create dictionary</div>
