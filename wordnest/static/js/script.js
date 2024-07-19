@@ -18,4 +18,6 @@ burgerMenu.addEventListener("click", function () {
     toggleActiveClass(this, document.querySelector(navigationSelector));
 });
 
-module.exports = { toggleActiveClass };
+if (typeof module !== 'undefined') {
+    module.exports = { toggleActiveClass };
+}
