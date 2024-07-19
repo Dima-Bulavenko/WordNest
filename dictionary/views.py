@@ -194,3 +194,16 @@ class DeleteAccountView(LoginRequiredMixin, RedirectView):
         else:
             return response
 
+
+class DeleteTranslationsView(LoginRequiredMixin, View):
+    def delete(self, request, *args, **kwargs):
+        try:
+            dictionary = get_object_or_404(request.user.dictionaries, pk=kwargs["dict_pk"])
+            word_trans = dictionary.translations.filter(from_word=kwargs["from_word_id"])
+            dictionary.translations.remove(*word_trans)
+            add_message(request, messages.SUCCESS, "Translations deleted.")
+            return HttpResponse()
+        except Http404:
+            add_message(request, messages.ERROR, "Translations deletion failed.")
+            raise
+
