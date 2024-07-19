@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+            Profile
+{% endblock title %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static "css/auth.css" %}">
+{% endblock css_block %}
+{% block content %}
+    <div class="profile_container">
+        <div class="profile_group" id="profile_info">
+            <div class="profile_group_title">General Information</div>
+            <div class="profile_item">
+                <div class="profile_title">Email</div>
+                <div>{{ user.email }}</div>
+            </div>
+            <div class="profile_item">
+                <div class="profile_title">Total words</div>
+                <div>{{ total_translations }}</div>
+            </div>
+            <div class="profile_item">
+                <div class="profile_title">Dictionaries</div>
+                {% if dictionaries %}
+                    {% include "dictionary/dictionary_list.html" %}
+                {% else %}
+                    <div>You don't have any dictionary</div>
+                    <a href="{% url 'create_dictionary' %}">
+                        <div class="submit_bt">Create dictionary</div>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="profile_group" id="profile_menage">
+            <div class="profile_group_title">Manage Account</div>
+            <div class="profile_item">
+                <a href="{% url 'account_change_password' %}">
+                    <div class="submit_bt">Change password</div>
+                </a>
+            </div>
+            <div class="profile_item">
+                <a href="{% url 'delete_account' %}">
+                    <div class="submit_bt danger">Delete account</div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

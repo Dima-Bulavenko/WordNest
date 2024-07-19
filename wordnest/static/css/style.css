@@ -589,6 +589,97 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     row-gap: 2px;
 }
 
+/* Profile section */
+.profile_container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 50px;
+}
+
+.profile_group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.profile_group_title {
+    padding: 10px 10px 10px 15px;
+    font-weight: var(--bold-fw);
+    font-size: var(--medium-fs);
+    background-color: rgba(0, 0, 0, 1);
+    color: var(--color-3);
+}
+
+.profile_item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px 15px 15px 20px;
+}
+
+.profile_title {
+    font-weight: var(--bold-fw);
+}
+
+.profile_item .dictionary {
+    border-bottom: none;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 230px;
+}
+
+.profile_item .dictionary > * {
+    padding: 5px;
+}
+
+.profile_item .dictionary > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.5s;
+}
+
+.profile_item .dictionary > a:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.profile_item .dictionary > a::before {
+    content: none;
+}
+
+.profile_item .word_amount {
+    display: none;
+}
+
+.profile_item .dictionary_name {
+    margin-bottom: 0;
+}
+
+.profile_item .delete_action > img {
+    transition: left 0.5s;
+}
+
+.profile_item .delete_action:hover > img {
+    transform: none;
+}
+
+.profile_item .delete_action:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.profile_item .delete_dictionary {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.profile_item .delete_dictionary > img {
+    width: 25px;
+    height: 25px;
+}
+
+.submit_bt.danger {
+    background-color: rgba(255, 0, 0, 1);
+}
 /* Media query: Tablet screen size */
 @media screen and (min-width: 768px) {
     /* Header */
