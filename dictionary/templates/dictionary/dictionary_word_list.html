@@ -1,5 +1,7 @@
+{% load static %}
 {% if translations %}
     {% for from_word, to_words in translations %}
+    <div class="dictionary_word_container">
         {% if is_paginated and forloop.last and page_obj.has_next %}
             <div hx-trigger="revealed"
                  hx-get="{% url 'dictionary' dictionary.source_language.code dictionary.target_language.code %}"
@@ -16,7 +18,16 @@
                     {% for to_word in to_words %}<div class="to_word">{{ to_word.word }};</div>{% endfor %}
                 </div>
             </div>
+        <div class="delete_word delete_action"
+            hx-delete="{% url 'delete_translations' dictionary.pk from_word.pk %}"
+            hx-target="closest .dictionary_word_container"
+            hx-swap="outerHTML">
+           <img src="{% static "img/trash_icon.svg" %}" alt="trash icon">
+       </div>
+        </div>
         {% endfor %}
     {% else %}
-        <p>No translations found.</p>
+        <div class="no_translations_found">
+            No translations found
+        </div>
     {% endif %}

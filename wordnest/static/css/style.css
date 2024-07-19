@@ -549,6 +549,10 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     transition: all 0.5s;
 }
 
+.delete_action > img {
+    transition: all 0.5s;
+}
+
 .delete_action:hover > img {
     transform: scale(1.2);
 }
@@ -568,11 +572,32 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     transition: all 0.5s;
 }
 
-.dictionary_word {
+.dictionary_word_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 10px 10px 10px 20px;
     border-bottom: 1px solid var(--color-4);
 }
 
+.dictionary_word {
+    flex-grow: 1;
+}
+
+.delete_word > img {
+    width: 25px;
+    height: 25px;
+}
+
+.no_translations_found {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: var(--bold-fw);
+    font-size: var(--medium-fs);
+    width: max-content;
+}
 .dictionary_word:last-child {
     border-bottom: none;
 }
