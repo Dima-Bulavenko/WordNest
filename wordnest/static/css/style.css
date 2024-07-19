@@ -857,9 +857,20 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     .authentication-button:hover {
         transform: scale(1.1);
     }  
+    /* Main block */
+    body {
+        display: flex;
+        flex-direction: column;
+    }
 
+    main {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
     /* Welcome section */
     #welcome {
+        flex-grow: 1;
         padding: 80px var(--desk-side-padding);
         justify-content: space-between;
     }
@@ -878,13 +889,10 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 
     /* Features section */
     #features {
+        flex-grow: 1;
         padding: 80px var(--desk-side-padding);
         flex-direction: row;
         align-items: center;
-    }
-
-    #feature-items {
-        width: 50%;
     }
 
     .feature {
