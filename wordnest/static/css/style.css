@@ -69,6 +69,22 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     border: 3px solid var(--color-1);
 }
 
+/* Page not found style 404 */
+
+#error_404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 400px;
+    text-align: center;
+    font-weight: var(--bold-fw);
+    font-size: var(--medium-fs);
+    padding: 20px;
+    border-radius: 20px;
+    background-color: var(--color-1);
+}
 /* Messages */
 #messages {
     position: fixed;
