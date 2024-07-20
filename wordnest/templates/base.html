@@ -69,7 +69,31 @@
             {% block content %}{% endblock content %}
         </main>
         <footer>
-            <!-- Footer content goes here -->
+            <div class="footer-container">
+                <div class="footer-section about">
+                    <h3>About This Project</h3>
+                    <p>This is a personal project aimed at creating bilingual dictionaries to help with language learning and translation.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/Dima-Bulavenko/wordnest" target="_blank" rel="noopener"
+                            aria-label="Visit GitHub repository of this project (open in new tab)">
+                            GitHub Repository
+                        </a></li>
+                        <li><a href="{% url "terms_conditions" %}">Terms of Service</a></li>
+                        <li><a href="{% url "privacy-policy" %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contact</h3>
+                    <p>Email: <a href="mailto:wordnest@example.com">wordnest@example.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Your Name. All rights reserved.</p>
+            </div>
         </footer>
         <script src="{% static 'js/script.js' %}"></script>
         {% block js_block %}{% endblock js_block %}
