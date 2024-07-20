@@ -64,7 +64,7 @@ class AJAXMixing:
         return request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
 
-class TranslationView(AJAXMixing, View):
+class TranslationView(AJAXMixing, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
         word = normalize_string(data.get("body"))
@@ -75,7 +75,7 @@ class TranslationView(AJAXMixing, View):
         return JsonResponse(translation)
 
 
-class CreateDictionaryView(CreateView):
+class CreateDictionaryView(LoginRequiredMixin, CreateView):
     model = Dictionary
     form_class = DictionaryForm
     template_name = "dictionary/dictionary_create.html"
@@ -93,7 +93,7 @@ class CreateDictionaryView(CreateView):
             return render(self.request, self.template_name, {"form": form})
 
 
-class DictionaryView(ListView):
+class DictionaryView(LoginRequiredMixin, ListView):
     paginate_by = 25
     paginate_orphans = 10
     template_name = "dictionary/dictionary.html"
@@ -137,7 +137,7 @@ class DictionaryView(ListView):
         )
 
 
-class AddWordView(AJAXMixing, View):
+class AddWordView(AJAXMixing, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
         try: 
