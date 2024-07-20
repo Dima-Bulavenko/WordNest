@@ -10,7 +10,8 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import CreateView, ListView, TemplateView, DetailView, RedirectView
+from django.views.generic import CreateView, DetailView, ListView, RedirectView, TemplateView
+from django_htmx.http import HttpResponseClientRedirect
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
@@ -183,10 +184,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
 class DeleteAccountView(LoginRequiredMixin, RedirectView):
     pattern_name = "home"
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
             request.user.delete()
-            response = super().get(request, *args, **kwargs)
+            if request.htmx:
+                response =  HttpResponseClientRedirect(self.get_redirect_url())
+            else:
+                response = super().post(request, *args, **kwargs)
             add_message(request, messages.SUCCESS, "Account deleted.")
         except Exception:
             add_message(request, messages.ERROR, "Account deletion failed.")            

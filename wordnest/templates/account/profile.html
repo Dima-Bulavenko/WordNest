@@ -38,7 +38,9 @@
                 </a>
             </div>
             <div class="profile_item">
-                <a href="{% url 'delete_account' %}">
+                <a hx-post="{% url 'delete_account' %}"
+                hx-confirm="After deleting, you can't recover your account."
+                >
                     <div class="submit_bt danger">Delete account</div>
                 </a>
             </div>
