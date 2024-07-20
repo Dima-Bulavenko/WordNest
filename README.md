@@ -2,46 +2,51 @@
 
 ## Table of contents
 
--   [WordNest (Milestone Project 4)](#wordnest--milestone-project-4-)
-    -   [Table of contents](#table-of-contents)
--   [Purpose](#purpose)
--   [UX Design](#ux-design)
-    -   [User stories](#user-stories)
-        -   [As a **first time user**](#as-a---first-time-user--)
-        -   [As a **returning user**](#as-a---returning-user--)
-    -   [UAC](#uac)
-    -   [Structure](#structure)
--   [Wireframes](#wireframes)
--   [Design](#design)
-    -   [Design](#design-1)
-        -   [Colour Scheme](#colour-scheme)
-        -   [Typography](#typography)
-        -   [Images](#images)
-        -   [Visual Effects](#visual-effects)
-            -   [Onscroll Animation](#onscroll-animation)
--   [Architecture](#architecture)
--   [Features](#features)
--   [Testing](#testing)
-    -   [User Story Testing](#user-story-testing)
-    -   [Manual Testing](#manual-testing)
-    -   [Unit testing](#unit-testing)
-        -   [Python unit tests](#python-unit-tests)
-        -   [JS unit tests](#js-unit-tests)
-    -   [Code validation](#code-validation)
-    -   [Lighthouse](#lighthouse)
--   [Technologies](#technologies)
-    -   [Languages](#languages)
-    -   [Programs, frameworks, libraries](#programs--frameworks--libraries)
--   [Deployment](#deployment)
-    -   [Github](#github)
-    -   [Heroku](#heroku)
-    -   [Fork GitHub Repo](#fork-github-repo)
-    -   [Clone GitHub Repo](#clone-github-repo)
--   [Credits](#credits)
-    -   [Media](#media)
-    -   [Design Template](#design-template)
-    -   [Code](#code)
-    -   [Acknowledgements](#acknowledgements)
+- [WordNest (Milestone Project 4)](#wordnest-milestone-project-4)
+  - [Table of contents](#table-of-contents)
+- [Purpose](#purpose)
+- [UX Design](#ux-design)
+  - [User stories](#user-stories)
+    - [As a **first time user**](#as-a-first-time-user)
+    - [As a **returning user**](#as-a-returning-user)
+  - [UAC](#uac)
+  - [Structure](#structure)
+- [Wireframes](#wireframes)
+- [Design](#design)
+  - [Design](#design-1)
+    - [Colour Scheme](#colour-scheme)
+    - [Typography](#typography)
+    - [Images](#images)
+    - [Visual Effects](#visual-effects)
+      - [Onscroll Animation](#onscroll-animation)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Testing](#testing)
+  - [Manual Testing](#manual-testing)
+    - [Navbar](#navbar)
+    - [Footer](#footer)
+    - [Home page](#home-page)
+    - [Dictionary page](#dictionary-page)
+    - [Profile page](#profile-page)
+    - [Forms](#forms)
+  - [Unit testing](#unit-testing)
+    - [Python unit tests](#python-unit-tests)
+    - [JS unit tests](#js-unit-tests)
+  - [Code validation](#code-validation)
+  - [Lighthouse](#lighthouse)
+- [Technologies](#technologies)
+  - [Languages](#languages)
+  - [Programs, frameworks, libraries](#programs-frameworks-libraries)
+- [Deployment](#deployment)
+  - [Github](#github)
+  - [Heroku](#heroku)
+  - [Fork GitHub Repo](#fork-github-repo)
+  - [Clone GitHub Repo](#clone-github-repo)
+- [Credits](#credits)
+  - [Media](#media)
+  - [Design Template](#design-template)
+  - [Code](#code)
+  - [Acknowledgements](#acknowledgements)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -105,11 +110,67 @@ The images in this project were sourced from [Unsplash](https://unsplash.com/) a
 
 # Testing
 
-## User Story Testing
-
-[Back to the top](#table-of-contents)
-
 ## Manual Testing
+
+### Navbar
+
+- :heavy_check_mark: Navbar layout displays correctly on different screen sizes.
+- :heavy_check_mark: All links are working correctly.
+- :heavy_check_mark: The burger menu functions correctly on mobile devices.
+- :heavy_check_mark: Anonymous users do not see links that are only for authenticated users.
+
+
+### Footer
+
+- :heavy_check_mark: Footer layout displays correctly on different screen sizes.
+- :heavy_check_mark: All links are working correctly.
+- :heavy_check_mark: The link to the GitHub repo opens in a new tab.
+
+### Home page
+
+- For anonymous users:
+  - :heavy_check_mark: The home page displays correctly on different screen sizes.
+  - :heavy_check_mark: All links are working correctly.
+  - :heavy_check_mark: Shows **Sign Up** button.
+  - :heavy_check_mark: Shows **Sign up with Google and Facebook** icons.
+  - :heavy_check_mark: Shows "Features" section.
+
+- For authenticated users:
+  - :heavy_check_mark: All links are working correctly.
+  - :heavy_check_mark: Shows dictionaries list.
+  - :heavy_check_mark: Shows **Create dictionary** button.
+  - :heavy_check_mark: Shows **Delete dictionary** icon near each dictionary.
+
+
+### Dictionary page
+
+- For anonymous users:
+  - :heavy_check_mark: Get redirect to the welcome page.
+
+- For authenticated users:
+  - :heavy_check_mark: All links are working correctly.
+  - :heavy_check_mark: The dictionary page displays correctly on different screen sizes.
+  - :heavy_check_mark: User can add, delete and search words.
+
+### Profile page
+
+- For anonymous users:
+  - :heavy_check_mark: Get redirect to the welcome page.
+
+- For authenticated users:
+  - :heavy_check_mark: All links are working correctly.
+  - :heavy_check_mark: The dictionary page displays correctly on different screen sizes..
+  - :heavy_check_mark: User can change the password.
+  - :heavy_check_mark: User can delete the account.
+  - :heavy_check_mark: User can seen general information about his account.
+  - :heavy_check_mark: User can see amount of his dictionaries and delete them.
+
+### Forms
+All forms were created using one template so that they have the same styles and functionality. An anonymous user can see all forms except **Set Password**, **Change Password**, and **Create Dictionary** forms.
+
+- For all users:
+  - :heavy_check_mark: All forms are displayed correctly on different screen sizes.
+  - :heavy_check_mark: All form fields, buttons, and hints work correctly.
 
 [Back to the top](#table-of-contents)
 
@@ -142,7 +203,6 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [Django](https://www.djangoproject.com/) for backend and frontend functionality.
 -   [PostgreSQL](https://www.postgresql.org/) relational database.
 -   [Psycopg](https://www.psycopg.org/) PostgreSQL adapter for Python.
--   [Bootstrap](https://getbootstrap.com/) for styling.
 -   [Google Fonts](https://fonts.google.com/) for typography.
 -   [GitHub](https://GitHub.com/) to host the source code.
 -   [Heroku](https://www.heroku.com/) to deploy and host the live app.
@@ -158,8 +218,8 @@ JS unit testing was performed through [Jest](https://jestjs.io/).
 -   [dj-database-url](https://github.com/jazzband/dj-database-url/) - allows to use URLs to connect to DB
 -   [js-cookie](https://github.com/js-cookie/js-cookie/) - JavaScript API for handling cookies
 -   [Tippy.js](https://atomiks.github.io/tippyjs/) is the complete tooltip, popover, dropdown, and menu solution for the web
-[Back to the top](#table-of-contents)
-- [django-htmx] - make using htmx in Django easier.
+    [Back to the top](#table-of-contents)
+-   [django-htmx] - make using htmx in Django easier.
 
 # Deployment
 
@@ -381,15 +441,15 @@ The WordNest project was deployed on a Heroku hosting server. The following step
 
 ## Design Template
 
-* [Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
+-   [Animated burger menu](https://codepen.io/ainalem/pen/GeMqdP)
 
 [Back to the top](#table-of-contents)
 
 ## Code
 
-* [Implementing infinite scroll in Django with htmx](https://medium.com/@franciscovcbm/infinite-scroll-with-django-and-htmx-27f61cfaf911)
+-   [Implementing infinite scroll in Django with htmx](https://medium.com/@franciscovcbm/infinite-scroll-with-django-and-htmx-27f61cfaf911)
 
-* [Dynamic messages with HTMX and Alpine.js](https://danjacob.net/posts/htmx_messages/)
+-   [Dynamic messages with HTMX and Alpine.js](https://danjacob.net/posts/htmx_messages/)
 
 [Back to the top](#table-of-contents)
 
