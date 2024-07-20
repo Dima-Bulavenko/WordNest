@@ -1,0 +1,39 @@
+.common-policy-style {
+    background-color: #ffffff;
+    padding: 40px 60px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.common-policy-style h1,
+.common-policy-style h2 {
+    color: #ffbf00;
+    margin-bottom: 20px;
+}
+
+.common-policy-style p,
+.common-policy-style ul {
+    color: #191919;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.common-policy-style ul {
+    padding-left: 20px;
+    list-style: disc inside;
+}
+
+.common-policy-style ul li {
+    margin-bottom: 10px;
+}
+
+.common-policy-style a {
+    color: #ffbf00;
+    text-decoration: none;
+}
+
+.common-policy-style a:hover {
+    text-decoration: underline;
+}
