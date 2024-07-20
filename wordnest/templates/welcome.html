@@ -8,9 +8,11 @@
             <p class="description">Unlock the power of words and create your own personalized dictionary.</p>
         </div>
         <div class="signup-block">
+            <a href="{% url "account_signup" %}">
             <div class="signup-btn bright-bg">
-                <a href="{% url "account_signup" %}">sign up</a>
+                sign up
             </div>
+            </a>
             <p>sign up with</p>
             {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
         </div>

@@ -7,15 +7,21 @@
             {{ form_type|title }}
         {% endif %}
     </h1>
-    <p class="align-center">
+    
         {% if form_type == "sign up" %}
+        <p class="align-center">
             Do you already have an account? Then please <a class="auth-link" href="{% url "account_login" %}">log in</a> instead.
+        </p>
         {% elif form_type == "sign in" %}
+        <p class="align-center">
             If you have not created an account yet, then please <a class="auth-link" href="{% url "account_signup" %}">sign up</a> first.
+        </p>
         {% elif form_type == "password reset" %}
+        <p class="align-center">
                 {% trans "Forgotten your password? Enter your email address below, and we'll send you an email allowing you to reset it." %}
+        </p>
         {% endif %}
-    </p>
+    
     {% if token_fail %}
         {% url 'account_reset_password' as passwd_reset_url %}
         <p class="align-center">

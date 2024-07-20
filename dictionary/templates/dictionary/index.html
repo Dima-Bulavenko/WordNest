@@ -9,12 +9,16 @@
 {% endblock css_block %}
 {% block content %}
     {% if dictionaries %}
-        <div class="dictionaries_container">
-            {% include "dictionary/dictionary_list.html" %}
+        <div class="dictionary_view_container">
+            <div class="dictionaries_container">
+                {% include "dictionary/dictionary_list.html" %}
+            </div>
+            <div>
+                <a href="{% url 'create_dictionary' %}">
+                    <div class="submit_bt">Create dictionary</div>
+                </a>
+            </div>
         </div>
-        <a href="{% url 'create_dictionary' %}">
-            <div class="submit_bt">Create dictionary</div>
-        </a>
     {% else %}
         <div class="no_dictionaries">
             <div>You don't have any dictionary</div>
