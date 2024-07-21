@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from azure.ai.translation.text import TextTranslationClient
 from azure.ai.translation.text.models import DictionaryTranslation, TranslationText
 from azure.core.credentials import AzureKeyCredential
+from azure.core.exceptions import HttpResponseError
 from decouple import config
 from django.db import transaction
 from django.db.models import QuerySet
@@ -103,12 +104,14 @@ class DictionaryAPITranslation(BaseAzureAPITranslation):
         if len(word) > 100:
             return []
 
-        translations = self.client.lookup_dictionary_entries(
-            body=[word],
-            from_language=from_lang,
-            to_language=to_lang,
-        )[0].translations
-
+        try:
+            translations = self.client.lookup_dictionary_entries(
+                body=[word],
+                from_language=from_lang,
+                to_language=to_lang,
+            )[0].translations
+        except HttpResponseError:
+            translations = []
         return translations
 
     def create_templated_translations(
