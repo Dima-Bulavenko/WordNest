@@ -89,6 +89,76 @@ To describe features for my project I used [this developer stories](https://gith
 [Back to the top](#table-of-contents)
 
 # Wireframes
+All wireframes were created using [figma](https://www.figma.com/). The wireframes are designed to provide a visual representation of the website's layout and functionality across different screen sizes.
+
+## Welcome page
+
+- <details>
+  <summary>Mobile</summary>
+  <img src="./docs/wlcome_page_mobile_wf.png"
+  alt="Mobile wire frame">
+</details>
+
+- <details>
+  <summary>Laptop</summary>
+  <img src="./docs/welcome_laptop_wf.png">
+</details>
+
+## Home page
+
+- <details>
+  <summary>Mobile</summary>
+  <img src="./docs/home_mobile_wf.png"
+  alt="Mobile wire frame">
+</details>
+
+- <details>
+  <summary>Laptop</summary>
+  <img src="./docs/home_laptop_wf.png">
+  alt="Laptop wire frame">
+</details>
+
+## Profile page
+
+- <details>
+  <summary>Mobile</summary>
+  <img src="./docs/profile_mobile_wf.png"
+  alt="Mobile wire frame">
+</details>
+
+- <details>
+  <summary>Laptop</summary>
+  <img src="./docs/profile_laptop_wf.png">
+  alt="Laptop wire frame">
+</details>
+
+## Dictionary page
+
+- <details>
+  <summary>Mobile</summary>
+  <img src="./docs/dictionary_mobile_wf.png"
+  alt="Mobile wire frame">
+</details>
+
+- <details>
+  <summary>Laptop</summary>
+  <img src="./docs/dictionary_laptop_wf.png">
+  alt="Laptop wire frame">
+</details>
+
+## Form page
+
+- <details>
+  <summary>Mobile</summary>
+  <img src="./docs/form_mobile_wf.png"
+  alt="Mobile wire frame">
+</details>
+
+- <details>
+  <summary>Laptop</summary>
+  <img src="./docs/form_laptop_wf.png">
+  alt="Laptop wire frame">
+</details>
 
 [Back to the Top](#help-u-website-milestone-project-4)
 
