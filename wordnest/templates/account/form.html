@@ -48,8 +48,8 @@
                 {% if field.errors %}
                     <div class="errors field_messages">{{ field.errors }}</div>
                 {% elif field.help_text %}
-                    <small id="{{ field.id_for_label }}_help-text"
-                           class="help_text field_messages">{{ field.help_text }}</small>
+                    <div id="{{ field.id_for_label }}_helptext"
+                           class="help_text field_messages">{{ field.help_text }}</div>
                 {% endif %}
             </div>
         {% endfor %}

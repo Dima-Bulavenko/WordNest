@@ -123,7 +123,8 @@ class DictionaryView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data["dictionary"] = self.dictionary
-        context_data["query"] = self.request.GET.get("word", "")    
+        context_data["query"] = self.request.GET.get("word", "")
+        context_data["title"] = "Dictionary"
         return context_data
     
     def get_object(self):
