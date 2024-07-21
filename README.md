@@ -177,10 +177,34 @@ All forms were created using one template so that they have the same styles and 
 ## Unit testing
 
 ### Python unit tests
+Unit tests was create with django built-in django test functionality. To run the tests, run the following command in the terminal:
+
+```bash
+python manage.py test
+```
+<details>
+  <summary>Test results:</summary>
+  <img src="./docs/python_tests.PNG" alt="Python unit tests">
+</details>
+
+<details>
+  <summary>Test coverage:</summary>
+  <img src="./docs/python_test_coverage.PNG" alt="Python test coverage">
+</details>
+
 
 ### JS unit tests
 
-JS unit testing was performed through [Jest](https://jestjs.io/).
+JS unit testing was performed through [Jest](https://jestjs.io/). To run the tests, run the following command in the terminal:
+
+```bash
+npm test wordnest/static/js/__tests__/
+```
+
+<details>
+  <summary>Test results:</summary>
+  <img src="./docs/js_tests.PNG" alt="JavaScript unit tests">
+</details>
 
 [Back to the top](#table-of-contents)
 
