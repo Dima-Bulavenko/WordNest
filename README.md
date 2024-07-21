@@ -263,6 +263,41 @@ To validate the JS code I use [ESLint] VScode extension(https://eslint.org/).
 
 ## Lighthouse
 
+-   :heavy_check_mark: [Welcome page](https://pagespeed.web.dev/analysis/https-wordnest-f67ad8aa67ee-herokuapp-com/7bjo7sh6r5?form_factor=mobile)
+
+- <details>
+  <summary>Home page</summary>
+  <img src="./docs/home_page_lighthouse.PNG" alt="Home page">
+</details>
+
+- <details>
+  <summary>Profile page</summary>
+  <img src="./docs/profile_page_lighthouse.PNG" alt="Profile page">
+</details>
+
+- <details>
+  <summary>Dictionary page</summary>
+  <img src="./docs/dictionary_page_lighthouse.PNG" alt="Dictionary page">
+</details>
+
+- <details>
+  <summary>Set Password page</summary>
+  <img src="./docs/set_password_page_lighthouse.PNG" alt="Set Password page">
+</details>
+
+- <details>
+  <summary>Change password page</summary>
+  <img src="./docs/change_password_lighthouse.PNG" alt="Change password page">
+</details>
+
+-   :heavy_check_mark: [Register page](https://pagespeed.web.dev/analysis/https-wordnest-f67ad8aa67ee-herokuapp-com-accounts-signup/q9mozw7reu?form_factor=desktop)
+
+-   :heavy_check_mark: [Login page](https://pagespeed.web.dev/analysis/https-wordnest-f67ad8aa67ee-herokuapp-com-accounts-login/5hgbzwf29x?form_factor=mobile)
+
+-   :heavy_check_mark: [Terms of Service page](https://pagespeed.web.dev/analysis/https-wordnest-f67ad8aa67ee-herokuapp-com-terms-conditions/u5uzniod6e?form_factor=mobile)
+
+-   :heavy_check_mark: [Privacy Policy page](https://pagespeed.web.dev/analysis/https-wordnest-f67ad8aa67ee-herokuapp-com-privacy-policy/xwkm6x2ajm?form_factor=mobile)
+
 [Back to the top](#table-of-contents)
 
 # Technologies
