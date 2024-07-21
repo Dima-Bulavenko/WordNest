@@ -40,11 +40,11 @@
             <nav id="navigation">
                 <ul>
                     {% if user.is_authenticated %}
-                        <li>
-                            <a href="{% url "home" %}">My dictionary</a>
+                        <li class="{% if request.path == "/" %}highlight{% endif %}">
+                            <a href="{% url 'home' %}">My dictionary</a>
                         </li>
-                        <li>
-                            <a href="{% url "profile" %}">Profile</a>
+                        <li class="{% if request.path == "/profile/" %}highlight{% endif %}">
+                            <a href="{% url 'profile' %}">Profile</a>
                         </li>
                         <li class="authentication-button dark-bg logout_btn">
                             <a href="{% url "account_logout" %}">Log out</a>

@@ -28,6 +28,10 @@
     margin: 0px;
 }
 
+.highlight{
+    border-bottom: 2px solid var(--color-2);
+}
+
 body {
     min-height: 100vh;
     padding-top: var(--header-height);
