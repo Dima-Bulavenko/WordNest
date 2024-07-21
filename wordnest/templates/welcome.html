@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{{ title }}{% endblock title %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
 {% block content %}
     <section id="welcome" class="dark-bg">
         <div class="theme-description">
@@ -9,9 +11,7 @@
         </div>
         <div class="signup-block">
             <a href="{% url "account_signup" %}">
-            <div class="signup-btn bright-bg">
-                sign up
-            </div>
+                <div class="signup-btn bright-bg">sign up</div>
             </a>
             <p>sign up with</p>
             {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
@@ -40,7 +40,7 @@
             <div class="feature feature-4">
                 <h3 class="theme sub-theme">Quick Word Search</h3>
                 <p class="description">Navigate through an extensive dictionary and find words in seconds.</p>
-            </div>            
+            </div>
         </div>
     </section>
 {% endblock content %}

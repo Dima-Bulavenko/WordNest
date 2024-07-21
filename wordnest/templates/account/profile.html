@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-            Profile
+    Profile
 {% endblock title %}
 {% block css_block %}
     <link rel="stylesheet" href="{% static "css/auth.css" %}">
@@ -39,8 +39,7 @@
             </div>
             <div class="profile_item">
                 <a hx-post="{% url 'delete_account' %}"
-                hx-confirm="After deleting, you can't recover your account."
-                >
+                   hx-confirm="After deleting, you can't recover your account.">
                     <div class="submit_bt danger">Delete account</div>
                 </a>
             </div>

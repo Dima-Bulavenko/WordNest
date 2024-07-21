@@ -5,9 +5,9 @@
  * @param {NodeListOf<Element>} infoIcons - A list of elements with the class 'info_icon'.
  */
 function addClickListenersToInfoIcons() {
-    const infoIcons = document.querySelectorAll('.info_icon');
-    infoIcons.forEach(function(icon) {
-        icon.addEventListener('click', function() {
+    const infoIcons = document.querySelectorAll(".info_icon");
+    infoIcons.forEach(function (icon) {
+        icon.addEventListener("click", function () {
             const helpTextId = this.dataset.helpTextId;
             const helpText = document.getElementById(helpTextId);
             if (helpText !== null) {
@@ -17,10 +17,10 @@ function addClickListenersToInfoIcons() {
     });
 }
 
-window.onload = function() {
+window.onload = function () {
     addClickListenersToInfoIcons();
 };
 
-if (typeof module !== 'undefined') {
-    module.exports = { addClickListenersToInfoIcons}
+if (typeof module !== "undefined") {
+    module.exports = { addClickListenersToInfoIcons };
 }

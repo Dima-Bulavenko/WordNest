@@ -22,9 +22,22 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    re_path(r"^accounts/email/$", page_not_found, {'exception': Exception('Not Found')}, name="account_email"),
-    path('accounts/', include('allauth.urls')),
-    path("terms-conditions/", TemplateView.as_view(template_name="terms_conditions.html"), name="terms_conditions"),
-    path("privacy-policy/", TemplateView.as_view(template_name="privacy_policy.html"), name="privacy-policy"),
+    re_path(
+        r"^accounts/email/$",
+        page_not_found,
+        {"exception": Exception("Not Found")},
+        name="account_email",
+    ),
+    path("accounts/", include("allauth.urls")),
+    path(
+        "terms-conditions/",
+        TemplateView.as_view(template_name="terms_conditions.html"),
+        name="terms_conditions",
+    ),
+    path(
+        "privacy-policy/",
+        TemplateView.as_view(template_name="privacy_policy.html"),
+        name="privacy-policy",
+    ),
     path("", include("dictionary.urls")),
 ]

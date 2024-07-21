@@ -20,15 +20,15 @@ def group_translations_by_from_word(
      Groups translations by their source words.
 
     This function iterates over an iterable of Translation objects and groups them by the source word (from_word).
-    It returns  A list of tuples where first item is the source word (from_word) and the second one the values are 
+    It returns  A list of tuples where first item is the source word (from_word) and the second one the values are
     lists of corresponding target words (to_word).
 
     Args:
         queryset (iter[Translation]): An iterable of Translation objects to be grouped.
 
     Returns:
-        list[tuple[Word, list[Word]]]: A list of tuples where each tuple contain two elements, the first one is 
-        a source word (from_word) and an the second is the corresponding value is a list of target words 
+        list[tuple[Word, list[Word]]]: A list of tuples where each tuple contain two elements, the first one is
+        a source word (from_word) and an the second is the corresponding value is a list of target words
         (to_word) associated with that source word.
     """
     groped_translations = {}

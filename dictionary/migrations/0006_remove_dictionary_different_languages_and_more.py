@@ -6,23 +6,32 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dictionary', '0005_dictionary_different_languages_and_more'),
+        ("dictionary", "0005_dictionary_different_languages_and_more"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='dictionary',
-            name='different_languages',
+            model_name="dictionary",
+            name="different_languages",
         ),
         migrations.AlterField(
-            model_name='dictionary',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dictionaries', to=settings.AUTH_USER_MODEL),
+            model_name="dictionary",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="dictionaries",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddConstraint(
-            model_name='dictionary',
-            constraint=models.CheckConstraint(check=models.Q(('source_language', models.F('target_language')), _negated=True), name='different_languages', violation_error_message='Source and target languages must be different.'),
+            model_name="dictionary",
+            constraint=models.CheckConstraint(
+                check=models.Q(
+                    ("source_language", models.F("target_language")), _negated=True
+                ),
+                name="different_languages",
+                violation_error_message="Source and target languages must be different.",
+            ),
         ),
     ]
