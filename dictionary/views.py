@@ -10,7 +10,14 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.generic import CreateView, ListView, TemplateView, DetailView, RedirectView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    RedirectView,
+    TemplateView,
+)
+from django_htmx.http import HttpResponseClientRedirect
 
 from dictionary.forms import DictionaryForm
 from dictionary.models import Dictionary
@@ -63,7 +70,7 @@ class AJAXMixing:
         return request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
 
-class TranslationView(AJAXMixing, View):
+class TranslationView(AJAXMixing, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
         word = normalize_string(data.get("body"))
@@ -74,7 +81,7 @@ class TranslationView(AJAXMixing, View):
         return JsonResponse(translation)
 
 
-class CreateDictionaryView(CreateView):
+class CreateDictionaryView(LoginRequiredMixin, CreateView):
     model = Dictionary
     form_class = DictionaryForm
     template_name = "dictionary/dictionary_create.html"
@@ -92,7 +99,7 @@ class CreateDictionaryView(CreateView):
             return render(self.request, self.template_name, {"form": form})
 
 
-class DictionaryView(ListView):
+class DictionaryView(LoginRequiredMixin, ListView):
     paginate_by = 25
     paginate_orphans = 10
     template_name = "dictionary/dictionary.html"
@@ -104,8 +111,8 @@ class DictionaryView(ListView):
         if search:
             search = normalize_string(search)
             queryset = self.dictionary.translations.filter(
-                Q(from_word__word__startswith=search) |
-                Q(to_word__word__startswith=search)
+                Q(from_word__word__startswith=search)
+                | Q(to_word__word__startswith=search)
             )
         else:
             queryset = self.dictionary.translations.all()
@@ -122,9 +129,10 @@ class DictionaryView(ListView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data["dictionary"] = self.dictionary
-        context_data["query"] = self.request.GET.get("word", "")    
+        context_data["query"] = self.request.GET.get("word", "")
+        context_data["title"] = "Dictionary"
         return context_data
-    
+
     def get_object(self):
         source = self.kwargs.get("source")
         target = self.kwargs.get("target")
@@ -136,15 +144,15 @@ class DictionaryView(ListView):
         )
 
 
-class AddWordView(AJAXMixing, View):
+class AddWordView(AJAXMixing, LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
-        try: 
+        try:
             request.user.add_word_to_dictionary(
-                normalize_string(data["source_language"]), 
-                normalize_string(data["target_language"]), 
-                normalize_string(data["word"]), 
-                normalize_string((data["translation"]))
+                normalize_string(data["source_language"]),
+                normalize_string(data["target_language"]),
+                normalize_string(data["word"]),
+                normalize_string(data["translation"]),
             )
             return HttpResponse()
         except ObjectDoesNotExist:
@@ -161,7 +169,7 @@ class DeleteDictionaryView(LoginRequiredMixin, View):
         except Http404:
             add_message(request, messages.ERROR, "Dictionary deletion failed.")
             raise
-    
+
 
 class ProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "user"
@@ -176,20 +184,23 @@ class ProfileView(LoginRequiredMixin, DetailView):
         total_translations = user.get_total_translations()
         context_data["dictionaries"] = user.dictionaries.all()
         context_data["total_translations"] = total_translations
-        
+
         return context_data
 
 
 class DeleteAccountView(LoginRequiredMixin, RedirectView):
     pattern_name = "home"
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
             request.user.delete()
-            response = super().get(request, *args, **kwargs)
+            if request.htmx:
+                response = HttpResponseClientRedirect(self.get_redirect_url())
+            else:
+                response = super().post(request, *args, **kwargs)
             add_message(request, messages.SUCCESS, "Account deleted.")
         except Exception:
-            add_message(request, messages.ERROR, "Account deletion failed.")            
+            add_message(request, messages.ERROR, "Account deletion failed.")
             raise
         else:
             return response
@@ -198,12 +209,15 @@ class DeleteAccountView(LoginRequiredMixin, RedirectView):
 class DeleteTranslationsView(LoginRequiredMixin, View):
     def delete(self, request, *args, **kwargs):
         try:
-            dictionary = get_object_or_404(request.user.dictionaries, pk=kwargs["dict_pk"])
-            word_trans = dictionary.translations.filter(from_word=kwargs["from_word_id"])
+            dictionary = get_object_or_404(
+                request.user.dictionaries, pk=kwargs["dict_pk"]
+            )
+            word_trans = dictionary.translations.filter(
+                from_word=kwargs["from_word_id"]
+            )
             dictionary.translations.remove(*word_trans)
             add_message(request, messages.SUCCESS, "Translations deleted.")
             return HttpResponse()
         except Http404:
             add_message(request, messages.ERROR, "Translations deletion failed.")
             raise
-

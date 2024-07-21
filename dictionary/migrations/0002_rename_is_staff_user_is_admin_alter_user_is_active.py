@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dictionary', '0001_initial'),
+        ("dictionary", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='user',
-            old_name='is_staff',
-            new_name='is_admin',
+            model_name="user",
+            old_name="is_staff",
+            new_name="is_admin",
         ),
         migrations.AlterField(
-            model_name='user',
-            name='is_active',
+            model_name="user",
+            name="is_active",
             field=models.BooleanField(default=True),
         ),
     ]

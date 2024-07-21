@@ -16,6 +16,7 @@ class TranslationStrategy(ABC):
     """
     An abstract class for translation strategies.
     """
+
     @abstractmethod
     def query_translation(self, word, from_lang, to_lang, user):
         """
@@ -32,7 +33,9 @@ class TranslationStrategy(ABC):
         """
         pass
 
-    def translate(self, word: str, from_lang: str, to_lang: str, user: User) -> list[dict]:
+    def translate(
+        self, word: str, from_lang: str, to_lang: str, user: User
+    ) -> list[dict]:
         """
         Runs the query_translation() and create_templated_translations() methods to get translations for the word.
 
@@ -73,7 +76,9 @@ class DatabaseTranslation(TranslationStrategy):
         self, word, from_lang, to_lang, translations, user
     ) -> list:
         dictionary_translations = user.get_word_translations(word, from_lang, to_lang)
-        translations = list(translations) + [trans for trans in dictionary_translations if trans not in translations]
+        translations = list(translations) + [
+            trans for trans in dictionary_translations if trans not in translations
+        ]
         templated_translations = []
         for translation in translations:
             template = self.get_translation_template()
@@ -119,16 +124,15 @@ class DictionaryAPITranslation(BaseAzureAPITranslation):
             template["translation_type"] = "dictionary_api"
             templated_translations.append(template)
         if templated_translations:
-            self.__create_approved_translations(word, from_lang, to_lang, templated_translations)
+            self.__create_approved_translations(
+                word, from_lang, to_lang, templated_translations
+            )
         return templated_translations
-    
+
     @staticmethod
     def __create_approved_translations(
-            word: str,
-            source_lang_code: str,
-            target_lang_code: str,
-            translations: list
-        ) -> None:
+        word: str, source_lang_code: str, target_lang_code: str, translations: list
+    ) -> None:
         """
         Create approved translations.
 
@@ -138,21 +142,22 @@ class DictionaryAPITranslation(BaseAzureAPITranslation):
             word (str): The word to translate.
             source_lang_code (str): The language code of the language the word is in.
             target_lang_code (str): The language code of the language to translate the word to.
-            translations (list): A list of dictionaries, each containing a translation of the word. 
+            translations (list): A list of dictionaries, each containing a translation of the word.
                                   Each dictionary must have a "text" key associated with the translated word.
         """
         with transaction.atomic():
             source_lang = Language.objects.get(code=source_lang_code)
             target_lang = Language.objects.get(code=target_lang_code)
-            from_word = Word.objects.get_or_create(word=word.lower(), language=source_lang)[0]
+            from_word = Word.objects.get_or_create(
+                word=word.lower(), language=source_lang
+            )[0]
             for translation in translations:
-                to_word = Word.objects.get_or_create(word=translation["text"], language=target_lang)[0]
+                to_word = Word.objects.get_or_create(
+                    word=translation["text"], language=target_lang
+                )[0]
                 Translation.objects.get_or_create(
-                    from_word=from_word, 
-                    to_word=to_word, 
-                    defaults={"is_approved": True}
+                    from_word=from_word, to_word=to_word, defaults={"is_approved": True}
                 )
-
 
 
 class TextAPITranslation(BaseAzureAPITranslation):
@@ -197,7 +202,6 @@ class Translator:
                 templated_data["translations"] = translations
                 break
         return templated_data
-
 
 
 def translate(word: str, from_lang: str, to_lang: str, user: User) -> dict:

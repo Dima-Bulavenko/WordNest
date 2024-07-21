@@ -7,55 +7,53 @@
             {{ form_type|title }}
         {% endif %}
     </h1>
-    
-        {% if form_type == "sign up" %}
+    {% if form_type == "sign up" %}
         <p class="align-center">
             Do you already have an account? Then please <a class="auth-link" href="{% url "account_login" %}">log in</a> instead.
         </p>
-        {% elif form_type == "sign in" %}
+    {% elif form_type == "sign in" %}
         <p class="align-center">
             If you have not created an account yet, then please <a class="auth-link" href="{% url "account_signup" %}">sign up</a> first.
         </p>
-        {% elif form_type == "password reset" %}
+    {% elif form_type == "password reset" %}
         <p class="align-center">
-                {% trans "Forgotten your password? Enter your email address below, and we'll send you an email allowing you to reset it." %}
+            {% trans "Forgotten your password? Enter your email address below, and we'll send you an email allowing you to reset it." %}
         </p>
-        {% endif %}
-    
+    {% endif %}
     {% if token_fail %}
         {% url 'account_reset_password' as passwd_reset_url %}
         <p class="align-center">
             {% blocktrans %}The password reset link was invalid, possibly because it has already been used.  Please request a <a href="{{ passwd_reset_url }}">new password reset</a>.{% endblocktrans %}
         </p>
     {% else %}
-    <form method="post" {% if action %}action="{{ action }}"{% endif %}>
-        {{ form.non_field_errors }}
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="field-wrapper {{ field.name }}_field_wrapper">
-                {% if field.name != "password2" %}
-                    <label for="{{ field.id_for_label }}" class="form_label">
-                        {{ field.label }}
-                        {% if field.field.required %}<span class="required">*</span>{% endif %}
-                    </label>
-                {% endif %}
-                <div class="field_icon_wrapper">
-                    {{ field }}
-                    {% if field.help_text %}
-                        {% include "svg_templates/info_icon.svg" %}
+        <form method="post" {% if action %}action="{{ action }}"{% endif %}>
+            {{ form.non_field_errors }}
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field-wrapper {{ field.name }}_field_wrapper">
+                    {% if field.name != "password2" %}
+                        <label for="{{ field.id_for_label }}" class="form_label">
+                            {{ field.label }}
+                            {% if field.field.required %}<span class="required">*</span>{% endif %}
+                        </label>
+                    {% endif %}
+                    <div class="field_icon_wrapper">
+                        {{ field }}
+                        {% if field.help_text %}
+                            {% include "svg_templates/info_icon.svg" %}
+                        {% endif %}
+                    </div>
+                    {% if field.errors %}
+                        <div class="errors field_messages">{{ field.errors }}</div>
+                    {% elif field.help_text %}
+                        <div id="{{ field.id_for_label }}_helptext"
+                             class="help_text field_messages">{{ field.help_text }}</div>
                     {% endif %}
                 </div>
-                {% if field.errors %}
-                    <div class="errors field_messages">{{ field.errors }}</div>
-                {% elif field.help_text %}
-                    <small id="{{ field.id_for_label }}_help-text"
-                           class="help_text field_messages">{{ field.help_text }}</small>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button class="submit_bt" type="submit">{{ form_type|title }}</button>
-        {% if form.forgot_pwd %}{{ form.forgot_pwd }}{% endif %}
-    </form>
+            {% endfor %}
+            <button class="submit_bt" type="submit">{{ form_type|title }}</button>
+            {% if form.forgot_pwd %}{{ form.forgot_pwd }}{% endif %}
+        </form>
     {% endif %}
     {% if SOCIALACCOUNT_ENABLED %}
         <div class="auth_social_container">

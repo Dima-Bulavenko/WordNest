@@ -40,7 +40,6 @@ main {
 
 .inter-font {
     font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: var(--regular-fw);
     font-style: normal;
     font-variation-settings: "slnt" 0;
@@ -60,14 +59,23 @@ a {
     display: inline-block;
 }
 
-
-input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]) {
-    outline : none;
+input:not(
+        [type="file" i],
+        [type="image" i],
+        [type="checkbox" i],
+        [type="radio" i]
+    ) {
+    outline: none;
     border: 1px solid var(--color-2);
     border-radius: 5px;
 }
 
-input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]):focus-visible {
+input:not(
+        [type="file" i],
+        [type="image" i],
+        [type="checkbox" i],
+        [type="radio" i]
+    ):focus-visible {
     border: 3px solid var(--color-1);
 }
 
@@ -99,8 +107,8 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 
 .message {
     min-width: 270px;
-    padding-left: 1rem; 
-    padding-right: 1rem; 
+    padding-left: 1rem;
+    padding-right: 1rem;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     border-radius: 0.375rem;
@@ -114,8 +122,8 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 
 .message > svg {
     width: 1.5rem;
-    height: 1.5rem; 
-    margin-right: 0.5rem; 
+    height: 1.5rem;
+    margin-right: 0.5rem;
     color: white;
 }
 .message_info {
@@ -187,7 +195,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     transition: height 0.5s;
 }
 
-#navigation.active{
+#navigation.active {
     height: calc(100vh - var(--header-height));
 }
 
@@ -199,7 +207,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     gap: 40px;
     text-align: center;
     font-weight: var(--bold-fw);
-    font-size: var(--small-fs)
+    font-size: var(--small-fs);
 }
 
 .authentication-button {
@@ -294,7 +302,8 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 /* Main block */
 
 /* Welcome section */
-#welcome, #features {
+#welcome,
+#features {
     padding: 80px var(--mob-side-padding);
     display: flex;
     flex-direction: column;
@@ -330,7 +339,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 .signup-btn {
     text-align: center;
     text-transform: capitalize;
-    
+
     max-width: 300px;
     border-radius: 10px;
     font-size: var(--medium-fs);
@@ -375,11 +384,13 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
     height: 35px;
 }
 
-.social_account_container img, .submit_bt {
+.social_account_container img,
+.submit_bt {
     transition: filter 0.5s;
 }
 
-.social_account_container img:hover, .submit_bt:hover {
+.social_account_container img:hover,
+.submit_bt:hover {
     filter: brightness(50%);
 }
 
@@ -400,7 +411,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .feature > p {
-    color: var(--color-2)
+    color: var(--color-2);
 }
 
 .sub-theme {
@@ -453,7 +464,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 #search_results {
     max-width: 75vw;
     font-size: var(--xsmall-fs);
-}   
+}
 
 .search_result {
     padding: 5px 15px;
@@ -462,7 +473,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 }
 
 .user_translation {
-    background-color: var(--color-1); 
+    background-color: var(--color-1);
     color: var(--color-2);
     border-bottom: 1px solid var(--color-2);
 }
@@ -496,7 +507,7 @@ input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" 
 #submit_user_translation {
     background-color: var(--color-1);
     padding: 5px 10px;
-    border-radius: 5px; 
+    border-radius: 5px;
     cursor: pointer;
     pointer-events: none;
     opacity: 0.5;
@@ -773,7 +784,9 @@ footer {
     color: var(--color-1);
 }
 
-.footer-section p, .footer-section ul, .footer-section a {
+.footer-section p,
+.footer-section ul,
+.footer-section a {
     color: var(--color-3);
     margin: 5px 0;
     text-decoration: none;
@@ -831,7 +844,7 @@ footer {
     }
 
     .signup-btn {
-        padding: 15px 0 ;
+        padding: 15px 0;
     }
 
     /* Features section */
@@ -839,7 +852,7 @@ footer {
         padding: 80px var(--tab-side-padding);
     }
 
-    #features>.theme-description {
+    #features > .theme-description {
         width: 80%;
     }
 
@@ -861,10 +874,10 @@ footer {
         display: flex;
         flex-direction: column;
     }
-    
+
     .dictionary_container {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
     }
 
     .dictionary_container > * {
@@ -877,14 +890,13 @@ footer {
     }
 
     #search_container {
-        padding: 30px 0 20px 30px
+        padding: 30px 0 20px 30px;
     }
 
     /* Profile section */
     #profile_menage > .profile_item {
         align-items: start;
     }
-
 }
 
 /* Media query: Desktop screen size */
@@ -898,7 +910,7 @@ footer {
         transition: transform 1s;
     }
 
-    #logo-image-text:hover> svg {
+    #logo-image-text:hover > svg {
         transform: rotate(90deg);
         transition: transform 1s;
     }
@@ -925,7 +937,7 @@ footer {
 
     #navigation > ul {
         flex-direction: row;
-        transform: none; 
+        transform: none;
         align-items: center;
     }
 
@@ -949,7 +961,7 @@ footer {
 
     .authentication-button:hover {
         transform: scale(1.1);
-    }  
+    }
     /* Main block */
     body {
         display: flex;
@@ -968,11 +980,13 @@ footer {
         justify-content: space-between;
     }
 
-    .signup-btn, .signup-with img {
+    .signup-btn,
+    .signup-with img {
         transition: all 0.5s;
     }
 
-    .signup-btn:hover, .signup-with img:hover {
+    .signup-btn:hover,
+    .signup-with img:hover {
         transform: scale(1.2);
     }
 
@@ -1010,12 +1024,11 @@ footer {
         width: 700px;
         align-self: center;
     }
-    
+
     .dictionaries_container {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        
     }
 
     .dictionary {

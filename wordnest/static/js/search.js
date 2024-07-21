@@ -72,7 +72,7 @@ function createSearchResults(translations) {
     });
     searchResults.appendChild(addTranslationButton);
     return searchResults;
-};
+}
 
 function createAddTranslationButton() {
     const addTranslation = document.createElement("div");
@@ -86,16 +86,16 @@ function createUserTranslationInput() {
     const userTranslationInput = document.createElement("input");
     userTranslationInput.type = "text";
     userTranslationInput.placeholder = "Enter translation";
-    userTranslationInput.id = "user_translation_input";  
-    return userTranslationInput;  
+    userTranslationInput.id = "user_translation_input";
+    return userTranslationInput;
 }
 
 function createSubmitUserTranslationButton() {
-    const submitUserTranslation = document.createElement("div")
+    const submitUserTranslation = document.createElement("div");
     submitUserTranslation.id = "submit_user_translation";
     submitUserTranslation.innerText = "Add translation";
     return submitUserTranslation;
-};
+}
 
 function createAddTranslationContainer() {
     const addTranslationContainer = document.createElement("div");
@@ -130,8 +130,8 @@ function createAddTranslationContainer() {
         }
     });
 
-    return addTranslationContainer
-};
+    return addTranslationContainer;
+}
 
 function addWordToDictionary(event) {
     if (translationTippy._isFetching) return;
@@ -155,33 +155,34 @@ function addWordToDictionary(event) {
             target_language: targetLang,
         }),
     })
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        translationTippy.hide();
-        textElement.value = "";
-        htmx.trigger(textElement, "input");
-    })
-    .catch((error) => {
-        const messageTippy = tippy(document.body, {
-            trigger: "manual",
-            allowHTML: true,
-            arrow: false,
-            content: () => {
-                let message = "An error occurred. Please reload the page and try again."; 
-                let element = document.createElement("div");
-                element.classList.add("add_word_error")
-                element.innerText = message;
-                return element; 
-            },
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            translationTippy.hide();
+            textElement.value = "";
+            htmx.trigger(textElement, "input");
         })
-        messageTippy.show();
-        setTimeout(() => messageTippy.hide(), 3000);
-    })
-    .finally(() => {
-        translationTippy._isFetching = false;
-    });
+        .catch((error) => {
+            const messageTippy = tippy(document.body, {
+                trigger: "manual",
+                allowHTML: true,
+                arrow: false,
+                content: () => {
+                    let message =
+                        "An error occurred. Please reload the page and try again.";
+                    let element = document.createElement("div");
+                    element.classList.add("add_word_error");
+                    element.innerText = message;
+                    return element;
+                },
+            });
+            messageTippy.show();
+            setTimeout(() => messageTippy.hide(), 3000);
+        })
+        .finally(() => {
+            translationTippy._isFetching = false;
+        });
 }
 
 /**
@@ -242,6 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
     runButton.addEventListener("click", () => translationTippy.show());
 });
 
-if (typeof module !== 'undefined') {
+if (typeof module !== "undefined") {
     module.exports = { showRunButton, createSearchResults };
 }

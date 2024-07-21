@@ -59,11 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.is_superuser
 
     def add_word_to_dictionary(
-            self, 
-            source_language: str, 
-            target_language: str,
-            word: str, 
-            translation: str
+        self, source_language: str, target_language: str, word: str, translation: str
     ) -> None:
         """
         Add a word to the user's dictionary.
@@ -78,10 +74,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             None
         """
         dictionary = self.dictionaries.get(
-                user=self,
-                source_language__code=source_language,
-                target_language__code=target_language,
-            )
+            user=self,
+            source_language__code=source_language,
+            target_language__code=target_language,
+        )
         with transaction.atomic():
             dictionary.add_translation(word, translation)
 
@@ -111,15 +107,15 @@ class User(AbstractBaseUser, PermissionsMixin):
             int: total number of user's translations
         """
         dictionaries = self.dictionaries.annotate(
-            translations_count=models.Count('translations')
+            translations_count=models.Count("translations")
         )
         total_translations = dictionaries.aggregate(
-            total=models.Sum('translations_count')
-        )['total']
+            total=models.Sum("translations_count")
+        )["total"]
 
         return total_translations if total_translations else 0
-        
-        
+
+
 class Word(models.Model):
     word = models.TextField()
     language = models.ForeignKey("Language", on_delete=models.CASCADE)
@@ -164,35 +160,38 @@ class Translation(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     is_approved = models.BooleanField(default=False)
-    
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["to_word", "from_word"],
-                name="unique_translation_pair_reverse"
+                fields=["to_word", "from_word"], name="unique_translation_pair_reverse"
             ),
         ]
 
     def __str__(self):
         return f"{self.from_word} -> {self.to_word}"
-    
+
     def save(self, *args, **kwargs):
         if self.from_word.language == self.to_word.language:
-            raise ValidationError("from_word and to_word cannot have the same language.")
+            raise ValidationError(
+                "from_word and to_word cannot have the same language."
+            )
         super().save(*args, **kwargs)
-        
+
     @classmethod
     def get_approved_translations(cls, word, source_language, target_language):
         return cls.objects.filter(
             from_word__word=word,
             from_word__language__code=source_language,
             to_word__language__code=target_language,
-            is_approved=True
+            is_approved=True,
         )
 
 
 class Dictionary(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dictionaries")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="dictionaries"
+    )
     translations = models.ManyToManyField(Translation, related_name="+")
     source_language = models.ForeignKey(
         Language, related_name="+", on_delete=models.CASCADE
@@ -204,14 +203,14 @@ class Dictionary(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=~Q(source_language=F('target_language')),
-                name='different_languages',
-                violation_error_message='Source and target languages must be different.'
+                check=~Q(source_language=F("target_language")),
+                name="different_languages",
+                violation_error_message="Source and target languages must be different.",
             ),
             models.UniqueConstraint(
-                fields=['user', 'source_language', 'target_language'],
-                name='unique_language_pair_per_user'
-            )
+                fields=["user", "source_language", "target_language"],
+                name="unique_language_pair_per_user",
+            ),
         ]
 
     def __str__(self):
@@ -229,16 +228,13 @@ class Dictionary(models.Model):
             bool: True if the translation was added, False otherwise.
         """
         from_word = Word.objects.get_or_create(
-            word=from_word, 
-            language=self.source_language
+            word=from_word, language=self.source_language
         )[0]
         to_word = Word.objects.get_or_create(
-            word=to_word, 
-            language=self.target_language
+            word=to_word, language=self.target_language
         )[0]
         translation = Translation.objects.get_or_create(
-            from_word=from_word, 
-            to_word=to_word
+            from_word=from_word, to_word=to_word
         )[0]
         self.translations.add(translation)
 

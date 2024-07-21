@@ -51,7 +51,7 @@ describe("createSearchResults", () => {
         const searchResults = createSearchResults(translations);
 
         expect(searchResults.id).toBe("search_results");
-        expect(searchResults.children.length).toBe(2);
+        expect(searchResults.children.length).toBe(3);
 
         for (let i = 0; i < translations.length; i++) {
             const resultElement = searchResults.children[i];
@@ -66,7 +66,7 @@ describe("createSearchResults", () => {
         const searchResults = createSearchResults(translations);
 
         expect(searchResults.id).toBe("search_results");
-        expect(searchResults.children.length).toBe(0);
+        expect(searchResults.children.length).toBe(1);
         expect(searchResults.innerText).toBe("No results found");
     });
 });

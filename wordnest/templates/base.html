@@ -8,28 +8,23 @@
               content="Discover WordNest, your go-to online dictionary for translations, multiple dictionaries, word sets, adding sentences for words, audio pronunciation, and much more. Explore the power of words today!">
         <meta name="keywords"
               content="WordNest, online dictionary, translations, multiple dictionaries, word sets, sentences for words, audio pronunciation, language learning">
-              <meta name="htmx-config" content='{
-                "responseHandling": [
-                    {"code":"204", "swap": false},   
-                    {"code":"[23]..", "swap": true}, 
-                    {"code":"422", "swap": true}, 
-                    {"code":"404", "swap": true, "select": "#messages", "swapOverride": "none"},
-                    {"code":"[45]..", "swap": false, "error": true}
-                ]
-            }'>
+        <meta name="htmx-config"
+              content='{ "responseHandling": [ {"code":"204", "swap": false}, {"code":"[23]..", "swap": true}, {"code":"422", "swap": true}, {"code":"404", "swap": true, "select": "#messages", "swapOverride": "none"}, {"code":"[45]..", "swap": false, "error": true} ] }'>
         <title>
             {% block title %}
                 Default title
             {% endblock title %}
         </title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-        {% block css_block %}{% endblock css_block %}
+        {% block css_block %}
+        {% endblock css_block %}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
               rel="stylesheet" />
         <script src="{% static 'js/htmx.min.js' %}" defer></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="inter-font" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         {% include "messages.html" %}
@@ -66,29 +61,41 @@
             </nav>
         </header>
         <main>
-            {% block content %}{% endblock content %}
+            {% block content %}
+            {% endblock content %}
         </main>
         <footer>
             <div class="footer-container">
                 <div class="footer-section about">
                     <h3>About This Project</h3>
-                    <p>This is a personal project aimed at creating bilingual dictionaries to help with language learning and translation.</p>
+                    <p>
+                        This is a personal project aimed at creating bilingual dictionaries to help with language learning and translation.
+                    </p>
                 </div>
                 <div class="footer-section links">
                     <h3>Useful Links</h3>
                     <ul>
                         <li>
-                            <a href="https://github.com/Dima-Bulavenko/wordnest" target="_blank" rel="noopener"
-                            aria-label="Visit GitHub repository of this project (open in new tab)">
-                            GitHub Repository
-                        </a></li>
-                        <li><a href="{% url "terms_conditions" %}">Terms of Service</a></li>
-                        <li><a href="{% url "privacy-policy" %}">Privacy Policy</a></li>
+                            <a href="https://github.com/Dima-Bulavenko/wordnest"
+                               target="_blank"
+                               rel="noopener"
+                               aria-label="Visit GitHub repository of this project (open in new tab)">
+                                GitHub Repository
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url "terms_conditions" %}">Terms of Service</a>
+                        </li>
+                        <li>
+                            <a href="{% url "privacy-policy" %}">Privacy Policy</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="footer-section contact">
                     <h3>Contact</h3>
-                    <p>Email: <a href="mailto:wordnest@example.com">wordnest@example.com</a></p>
+                    <p>
+                        Email: <a href="mailto:wordnest@example.com">wordnest@example.com</a>
+                    </p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -96,6 +103,7 @@
             </div>
         </footer>
         <script src="{% static 'js/script.js' %}"></script>
-        {% block js_block %}{% endblock js_block %}
+        {% block js_block %}
+        {% endblock js_block %}
     </body>
 </html>

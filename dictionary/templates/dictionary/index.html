@@ -10,9 +10,7 @@
 {% block content %}
     {% if dictionaries %}
         <div class="dictionary_view_container">
-            <div class="dictionaries_container">
-                {% include "dictionary/dictionary_list.html" %}
-            </div>
+            <div class="dictionaries_container">{% include "dictionary/dictionary_list.html" %}</div>
             <div>
                 <a href="{% url 'create_dictionary' %}">
                     <div class="submit_bt">Create dictionary</div>

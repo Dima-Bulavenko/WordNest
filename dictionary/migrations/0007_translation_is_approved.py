@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dictionary', '0006_remove_dictionary_different_languages_and_more'),
+        ("dictionary", "0006_remove_dictionary_different_languages_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='translation',
-            name='is_approved',
+            model_name="translation",
+            name="is_approved",
             field=models.BooleanField(default=False),
         ),
     ]
