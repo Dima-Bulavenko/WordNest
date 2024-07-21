@@ -50,6 +50,7 @@
 - [Technologies](#technologies)
   * [Languages](#languages)
   * [Programs, frameworks, libraries](#programs--frameworks--libraries)
+- [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
   * [Heroku](#heroku)
   * [Clone GitHub Repo](#clone-github-repo)
@@ -488,6 +489,26 @@ To validate the JS code I use [ESLint] VScode extension(https://eslint.org/).
 
 [Back to the top](#table-of-contents)
 
+# Environment Variables
+To run this project locally, you will need to create a `.env` file in the root directory of the project and add the following environment variables:
+
+```bash
+SECRET_KEY=your_django_secret_key
+DEBUG=True
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+AZURE_TRANSLATOR_KEY=
+```
+`GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET` used for user social authentication.
+
+`AZURE_TRANSLATOR_KEY` used to translate words with API.
 
 # Deployment
 
